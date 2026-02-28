@@ -1,11 +1,12 @@
 package manager
 
 import (
+	"errors"
 	"fmt"
-	api "github.com/fsouza/go-dockerclient"
-	"github.com/pkg/errors"
 	"io"
 	"os"
+
+	api "github.com/fsouza/go-dockerclient"
 )
 
 type Docker struct {

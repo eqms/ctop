@@ -7,12 +7,12 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/bcicen/ctop/config"
-	"github.com/bcicen/ctop/connector"
-	"github.com/bcicen/ctop/container"
-	"github.com/bcicen/ctop/cwidgets/compact"
-	"github.com/bcicen/ctop/logging"
-	"github.com/bcicen/ctop/widgets"
+	"github.com/eqms/ctop/config"
+	"github.com/eqms/ctop/connector"
+	"github.com/eqms/ctop/container"
+	"github.com/eqms/ctop/cwidgets/compact"
+	"github.com/eqms/ctop/logging"
+	"github.com/eqms/ctop/widgets"
 	ui "github.com/gizak/termui"
 	tm "github.com/nsf/termbox-go"
 )
@@ -134,8 +134,7 @@ func validSort(s string) {
 func panicExit() {
 	if r := recover(); r != nil {
 		Shutdown()
-		panic(r)
-		fmt.Printf("error: %s\n", r)
+		fmt.Fprintf(os.Stderr, "error: %s\n", r)
 		os.Exit(1)
 	}
 }

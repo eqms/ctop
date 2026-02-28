@@ -5,10 +5,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bcicen/ctop/config"
-	"github.com/bcicen/ctop/container"
-	"github.com/bcicen/ctop/widgets"
-	"github.com/bcicen/ctop/widgets/menu"
+	"github.com/eqms/ctop/config"
+	"github.com/eqms/ctop/container"
+	"github.com/eqms/ctop/widgets"
+	"github.com/eqms/ctop/widgets/menu"
 	ui "github.com/gizak/termui"
 	"github.com/pkg/browser"
 )
@@ -370,16 +370,9 @@ func ExecShell() MenuFn {
 
 	ui.DefaultEvtStream.ResetHandlers()
 	defer ui.DefaultEvtStream.ResetHandlers()
-	// Detect and execute default shell in container.
-	// Execute Ash shell command: /bin/sh -c
-	// Reset colors: printf '\e[0m\e[?25h'
-	// Clear screen
-	// Run default shell for the user. It's configured in /etc/passwd and looks like root:x:0:0:root:/root:/bin/bash:
-	//  1. Get current user id: id -un
-	//  2. Find user's line in /etc/passwd by grep
-	//  3. Extract default user's shell by cutting seven's column separated by :
-	//  4. Execute the shell path with eval
-	if err := c.Exec([]string{"/bin/sh", "-c", "printf '\\e[0m\\e[?25h' && clear && eval `grep ^$(id -un): /etc/passwd | cut -d : -f 7-`"}); err != nil {
+	// Execute a login shell directly in the container.
+	// Using /bin/sh -l avoids eval-based shell injection from /etc/passwd.
+	if err := c.Exec([]string{"/bin/sh", "-l"}); err != nil {
 		log.StatusErr(err)
 	}
 

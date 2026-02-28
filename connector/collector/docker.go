@@ -1,7 +1,7 @@
 package collector
 
 import (
-	"github.com/bcicen/ctop/models"
+	"github.com/eqms/ctop/models"
 	api "github.com/fsouza/go-dockerclient"
 )
 

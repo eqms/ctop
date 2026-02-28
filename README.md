@@ -130,6 +130,17 @@ Option | Description
 [macports]: https://repology.org/badge/version-for-repo/macports/ctop.svg?header=macports "ctop"
 [scoop]: https://img.shields.io/scoop/v/ctop?bucket=main "ctop"
 
+## Fork Information
+
+This is a maintained fork of [bcicen/ctop](https://github.com/bcicen/ctop). Originally created by [VektorLab](https://github.com/vektorlab).
+
+Changes in this fork:
+- Security fixes (shell injection, file permissions, debug server binding)
+- Updated to Go 1.22 with modern stdlib (`log/slog`, `os.ReadDir`)
+- Replaced unmaintained dependencies (`op/go-logging`, `nu7hatch/gouuid`, `pkg/errors`)
+- GitHub Actions CI/CD with multi-platform builds (Linux amd64/arm64, macOS amd64/arm64, Windows amd64)
+- Docker images published to GHCR (`ghcr.io/eqms/ctop`)
+
 ## Alternatives
 
-See [Awesome Docker list](https://github.com/veggiemonk/awesome-docker/blob/master/README.md#terminal) for similar tools to work with Docker. 
+See [Awesome Docker list](https://github.com/veggiemonk/awesome-docker/blob/master/README.md#terminal) for similar tools to work with Docker.

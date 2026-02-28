@@ -5,7 +5,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/bcicen/ctop/logging"
+	"github.com/eqms/ctop/logging"
 )
 
 var (

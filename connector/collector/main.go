@@ -3,8 +3,8 @@ package collector
 import (
 	"math"
 
-	"github.com/bcicen/ctop/logging"
-	"github.com/bcicen/ctop/models"
+	"github.com/eqms/ctop/logging"
+	"github.com/eqms/ctop/models"
 )
 
 var log = logging.Init()

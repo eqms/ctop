@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"sort"
 
-	"github.com/bcicen/ctop/config"
+	"github.com/eqms/ctop/config"
 )
 
 type sortMethod func(c1, c2 *Container) bool

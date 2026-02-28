@@ -98,7 +98,7 @@ func Write() (path string, err error) {
 		}
 	}
 
-	file, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
 		return path, fmt.Errorf("failed to open config for writing: %s", err)
 	}

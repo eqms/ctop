@@ -6,12 +6,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/op/go-logging"
 	"github.com/hako/durafmt"
 
-	"github.com/bcicen/ctop/connector/collector"
-	"github.com/bcicen/ctop/connector/manager"
-	"github.com/bcicen/ctop/container"
+	"github.com/eqms/ctop/connector/collector"
+	"github.com/eqms/ctop/connector/manager"
+	"github.com/eqms/ctop/container"
 	api "github.com/fsouza/go-dockerclient"
 )
 
@@ -95,17 +94,17 @@ func (cm *Docker) watchEvents() {
 		case "health_status: healthy", "health_status: unhealthy":
 			sepIdx := strings.Index(actionName, ": ")
 			healthStatus := e.Action[sepIdx+2:]
-			if log.IsEnabledFor(logging.DEBUG) {
+			if log.IsDebugEnabled() {
 				log.Debugf("handling docker event: action=health_status id=%s %s", e.ID, healthStatus)
 			}
 			cm.statuses <- StatusUpdate{e.ID, "health", healthStatus}
 		case "create":
-			if log.IsEnabledFor(logging.DEBUG) {
+			if log.IsDebugEnabled() {
 				log.Debugf("handling docker event: action=create id=%s", e.ID)
 			}
 			cm.needsRefresh <- e.ID
 		case "destroy":
-			if log.IsEnabledFor(logging.DEBUG) {
+			if log.IsDebugEnabled() {
 				log.Debugf("handling docker event: action=destroy id=%s", e.ID)
 			}
 			cm.delByID(e.ID)
@@ -113,7 +112,7 @@ func (cm *Docker) watchEvents() {
 			// check if this action changes status e.g. start -> running
 			status := actionToStatus[actionName]
 			if status != "" {
-				if log.IsEnabledFor(logging.DEBUG) {
+				if log.IsDebugEnabled() {
 					log.Debugf("handling docker event: action=%s id=%s %s", actionName, e.ID, status)
 				}
 				cm.statuses <- StatusUpdate{e.ID, "status", status}

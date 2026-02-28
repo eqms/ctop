@@ -1,9 +1,9 @@
 package compact
 
 import (
-	"github.com/bcicen/ctop/config"
-	"github.com/bcicen/ctop/logging"
-	"github.com/bcicen/ctop/models"
+	"github.com/eqms/ctop/config"
+	"github.com/eqms/ctop/logging"
+	"github.com/eqms/ctop/models"
 
 	ui "github.com/gizak/termui"
 )

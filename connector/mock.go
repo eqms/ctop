@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bcicen/ctop/connector/collector"
-	"github.com/bcicen/ctop/connector/manager"
-	"github.com/bcicen/ctop/container"
+	"github.com/eqms/ctop/connector/collector"
+	"github.com/eqms/ctop/connector/manager"
+	"github.com/eqms/ctop/container"
+	"github.com/google/uuid"
 	"github.com/jgautheron/codename-generator"
-	"github.com/nu7hatch/gouuid"
 )
 
 func init() { enabled["mock"] = NewMock }
@@ -125,11 +125,7 @@ func (cs *Mock) del(idx ...int) {
 }
 
 func makeID() string {
-	u, err := uuid.NewV4()
-	if err != nil {
-		panic(err)
-	}
-	return strings.Replace(u.String(), "-", "", -1)[:12]
+	return strings.Replace(uuid.New().String(), "-", "", -1)[:12]
 }
 
 func makeName() string {
