@@ -14,14 +14,14 @@ class Ctop < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-darwin-arm64"
-      sha256 "dc6a8d4920c8b4aa03ddb2f8719868cc517c24547123a7aa8ed17df3fceded2e"
+      sha256 "2ef960b7fd1b550680c67fe5cbc064a384229d12890cef21b0b1faeed714266f"
 
       def install
         bin.install "ctop-#{version}-darwin-arm64" => "ctop"
       end
     else
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-darwin-amd64"
-      sha256 "f69af54fce479205e73a6cc4fe8aae96d0e6aa4b5401cce7fe376334f33961d7"
+      sha256 "9d5b0b7d439062f5bcfff49628dde3a871e7d56d6c9779e42f5ed0ecc0e11e9f"
 
       def install
         bin.install "ctop-#{version}-darwin-amd64" => "ctop"
@@ -32,14 +32,14 @@ class Ctop < Formula
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-linux-arm64"
-      sha256 "eac008ab469223d2092ec4e32362096cfce5095ea2f9e9b7ae5bc02e1b6196b4"
+      sha256 "448f33f3e0c4d699997d1c78260cb3b97df3d88f7d0f60bd23ea1fa810376ce7"
 
       def install
         bin.install "ctop-#{version}-linux-arm64" => "ctop"
       end
     else
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-linux-amd64"
-      sha256 "22c9ebce28c9f1ef23dbdd68b00ac6c44eedad9535d5b2d932e73370330f1055"
+      sha256 "e39d2e6baf0f5d77058d6fc5f85d71db9a7e3ab88814c0009e97cd8a5a163e09"
 
       def install
         bin.install "ctop-#{version}-linux-amd64" => "ctop"
