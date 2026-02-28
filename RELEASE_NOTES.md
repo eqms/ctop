@@ -6,6 +6,14 @@
 
 ## Deutsche Release Notes
 
+### v0.8.4 (2026-02-28)
+
+#### Bugfixes
+- **Input-Widget Width-Fix**: Commit-Dialog Eingabefeld war zu schmal (28 statt 68 Zeichen) — `SetMaxLen()` berechnet jetzt die Widget-Breite korrekt neu
+- **Exec Shell Fix**: Shell-Ausführung im Container überlagerte sich mit der TUI — Terminal wird jetzt vor Shell-Start freigegeben (`ui.Close()`) und nach Beendigung sauber wiederhergestellt (`ui.Init()`)
+
+---
+
 ### v0.8.3 (2026-02-28)
 
 #### Neue Features
@@ -61,6 +69,14 @@ Erster Release des gepflegten Forks von [bcicen/ctop](https://github.com/bcicen/
 ---
 
 ## English Release Notes
+
+### v0.8.4 (2026-02-28)
+
+#### Bugfixes
+- **Input widget width fix**: Commit dialog input field was too narrow (28 instead of 68 characters) — `SetMaxLen()` now correctly recalculates widget width
+- **Exec shell fix**: Shell execution inside container overlapped with the TUI — terminal is now released before shell start (`ui.Close()`) and cleanly restored after exit (`ui.Init()`)
+
+---
 
 ### v0.8.3 (2026-02-28)
 

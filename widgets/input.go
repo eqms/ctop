@@ -43,6 +43,12 @@ func (i *Input) calcSize() {
 	i.Width = i.MaxLen + (i.padding[0] * 2)
 }
 
+// SetMaxLen updates MaxLen and recalculates widget dimensions
+func (i *Input) SetMaxLen(n int) {
+	i.MaxLen = n
+	i.calcSize()
+}
+
 func (i *Input) Buffer() ui.Buffer {
 	var cell ui.Cell
 	buf := i.Block.Buffer()

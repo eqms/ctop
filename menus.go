@@ -10,6 +10,7 @@ import (
 	"github.com/eqms/ctop/widgets"
 	"github.com/eqms/ctop/widgets/menu"
 	ui "github.com/gizak/termui"
+	tm "github.com/nsf/termbox-go"
 	"github.com/pkg/browser"
 )
 
@@ -377,19 +378,25 @@ func LogMenu() MenuFn {
 
 func ExecShell() MenuFn {
 	c := cursor.Selected()
-
 	if c == nil {
 		return nil
 	}
 
-	ui.DefaultEvtStream.ResetHandlers()
-	defer ui.DefaultEvtStream.ResetHandlers()
+	// Suspend TUI — release terminal for interactive shell
+	ui.Close()
+
 	// Execute a login shell directly in the container.
 	// The shell is configurable via --shell flag, CTOP_SHELL env, or config file.
 	shell := config.GetVal("shell")
 	if err := c.Exec([]string{shell, "-l"}); err != nil {
 		log.StatusErr(err)
 	}
+
+	// Resume TUI
+	if err := ui.Init(); err != nil {
+		panic(err)
+	}
+	tm.SetInputMode(tm.InputAlt)
 
 	return nil
 }
@@ -514,7 +521,7 @@ func CommitMenu() MenuFn {
 
 	i := widgets.NewInput()
 	i.BorderLabel = "Commit as Image"
-	i.MaxLen = 60
+	i.SetMaxLen(60)
 	i.SetY(ui.TermHeight() - i.Height)
 	i.Data = suggested
 	ui.Render(i)
