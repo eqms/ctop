@@ -8,20 +8,20 @@
 class Ctop < Formula
   desc "Top-like interface for container metrics"
   homepage "https://github.com/eqms/ctop"
-  version "0.8.1"
+  version "0.8.2"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-darwin-arm64"
-      sha256 "e85f1dcd01dd02a30b128510169d1a95f4e9902db935d61365e44633113e5d63"
+      sha256 "c0b45edb61ebccfad756deecbec24a7bcf35b4e4d340ff5c2d56f873a7b5cb6b"
 
       def install
         bin.install "ctop-#{version}-darwin-arm64" => "ctop"
       end
     else
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-darwin-amd64"
-      sha256 "4d74484a534c3c2fab38d265a1d7c666accb84117e5f5d2f899392307befb6f6"
+      sha256 "0737a068e35c29238d720a6f948dcbe012f6fee76b82c142e941be4854bfaf53"
 
       def install
         bin.install "ctop-#{version}-darwin-amd64" => "ctop"
@@ -32,14 +32,14 @@ class Ctop < Formula
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-linux-arm64"
-      sha256 "d1d661260f67e6abff8468edf2df9409f4382768e11de3a2c3e61d57cfa7e750"
+      sha256 "d344ffc2a0e3f51f462a8283744e452d0dbf5b79345e43e045046dc13a4b997d"
 
       def install
         bin.install "ctop-#{version}-linux-arm64" => "ctop"
       end
     else
       url "https://github.com/eqms/ctop/releases/download/v#{version}/ctop-#{version}-linux-amd64"
-      sha256 "aa48e329a872e4e59f8b287b5bdb692650a56695dec6c293649db1ed6a211d3d"
+      sha256 "a035ee46ab1775422d60017ce61fcb6a0f23cf6656b02d441a05db39b99580dc"
 
       def install
         bin.install "ctop-#{version}-linux-amd64" => "ctop"
