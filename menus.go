@@ -371,8 +371,9 @@ func ExecShell() MenuFn {
 	ui.DefaultEvtStream.ResetHandlers()
 	defer ui.DefaultEvtStream.ResetHandlers()
 	// Execute a login shell directly in the container.
-	// Using /bin/sh -l avoids eval-based shell injection from /etc/passwd.
-	if err := c.Exec([]string{"/bin/sh", "-l"}); err != nil {
+	// The shell is configurable via --shell flag, CTOP_SHELL env, or config file.
+	shell := config.GetVal("shell")
+	if err := c.Exec([]string{shell, "-l"}); err != nil {
 		log.StatusErr(err)
 	}
 

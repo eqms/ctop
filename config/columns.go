@@ -71,10 +71,20 @@ var defaultColumns = []Column{
 		Label:   "Container PID Count",
 		Enabled: true,
 	},
-	Column{
+	{
 		Name:    "uptime",
 		Label:   "Running uptime duration",
 		Enabled: true,
+	},
+	{
+		Name:    "health",
+		Label:   "Health Check Status",
+		Enabled: false,
+	},
+	{
+		Name:    "restarts",
+		Label:   "Restart Count",
+		Enabled: false,
 	},
 }
 

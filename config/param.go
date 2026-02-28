@@ -17,6 +17,11 @@ var defaultParams = []*Param{
 		Val:   "status,name,id,cpu,mem,net,io,pids,uptime",
 		Label: "Enabled Columns",
 	},
+	&Param{
+		Key:   "shell",
+		Val:   "/bin/sh",
+		Label: "Exec Shell",
+	},
 }
 
 type Param struct {

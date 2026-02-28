@@ -2,6 +2,7 @@ package compact
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/eqms/ctop/cwidgets"
 	"github.com/eqms/ctop/models"
@@ -99,6 +100,63 @@ func NewUptimeCol() CompactCol {
 
 func (w *UptimeCol) SetMeta(m models.Meta) {
 	w.Text = m.Get("uptime")
+}
+
+type HealthCol struct {
+	*TextCol
+}
+
+func NewHealthCol() CompactCol {
+	c := &HealthCol{NewTextCol("HEALTH")}
+	c.fWidth = 10
+	return c
+}
+
+func (w *HealthCol) SetMeta(m models.Meta) {
+	val := m.Get("health")
+	switch val {
+	case "healthy":
+		w.TextFgColor = ui.ThemeAttr("status.ok")
+		w.setText("healthy")
+	case "unhealthy":
+		w.TextFgColor = ui.ThemeAttr("status.danger")
+		w.setText("unhealthy")
+	case "starting":
+		w.TextFgColor = ui.ThemeAttr("status.warn")
+		w.setText("starting")
+	default:
+		w.TextFgColor = ui.ThemeAttr("par.text.fg")
+		w.setText("-")
+	}
+}
+
+type RestartsCol struct {
+	*TextCol
+}
+
+func NewRestartsCol() CompactCol {
+	c := &RestartsCol{NewTextCol("RESTARTS")}
+	c.fWidth = 8
+	return c
+}
+
+func (w *RestartsCol) SetMeta(m models.Meta) {
+	val := m.Get("restarts")
+	if val == "" {
+		w.TextFgColor = ui.ThemeAttr("par.text.fg")
+		w.setText("-")
+		return
+	}
+	w.setText(val)
+	n, _ := strconv.Atoi(val)
+	switch {
+	case n > 5:
+		w.TextFgColor = ui.ThemeAttr("status.danger")
+	case n > 0:
+		w.TextFgColor = ui.ThemeAttr("status.warn")
+	default:
+		w.TextFgColor = ui.ThemeAttr("par.text.fg")
+	}
 }
 
 type TextCol struct {

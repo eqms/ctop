@@ -45,6 +45,7 @@ func main() {
 		reverseSortFlag = flag.Bool("r", false, "reverse container sort order")
 		invertFlag      = flag.Bool("i", false, "invert default colors")
 		connectorFlag   = flag.String("connector", "docker", "container connector to use")
+		shellFlag       = flag.String("shell", "", "shell to exec in containers (default: /bin/sh)")
 	)
 	flag.Parse()
 
@@ -67,6 +68,11 @@ func main() {
 		log.Warningf("reading config: %s", err)
 	}
 
+	// override default config values with environment variables
+	if v, ok := os.LookupEnv("CTOP_SHELL"); ok {
+		config.Update("shell", v)
+	}
+
 	// override default config values with command line flags
 	if *filterFlag != "" {
 		config.Update("filterStr", *filterFlag)
@@ -83,6 +89,10 @@ func main() {
 
 	if *reverseSortFlag {
 		config.Toggle("sortReversed")
+	}
+
+	if *shellFlag != "" {
+		config.Update("shell", *shellFlag)
 	}
 
 	// init ui

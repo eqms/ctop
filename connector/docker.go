@@ -190,6 +190,7 @@ func (cm *Docker) refresh(c *container.Container) {
 	c.SetMeta("created", insp.Created.Format("Mon Jan 02 15:04:05 2006"))
 	c.SetMeta("uptime", calcUptime(insp))
 	c.SetMeta("health", insp.State.Health.Status)
+	c.SetMeta("restarts", fmt.Sprintf("%d", insp.RestartCount))
 	c.SetMeta("[ENV-VAR]", strings.Join(insp.Config.Env, ";"))
 	c.SetState(insp.State.Status)
 }

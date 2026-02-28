@@ -8,18 +8,20 @@ import (
 )
 
 type CTopHeader struct {
-	Time   *ui.Par
-	Count  *ui.Par
-	Filter *ui.Par
-	bg     *ui.Par
+	Time    *ui.Par
+	Count   *ui.Par
+	Filter  *ui.Par
+	Version *ui.Par
+	bg      *ui.Par
 }
 
 func NewCTopHeader() *CTopHeader {
 	return &CTopHeader{
-		Time:   headerPar(2, ""),
-		Count:  headerPar(24, "-"),
-		Filter: headerPar(40, ""),
-		bg:     headerBg(),
+		Time:    headerPar(2, ""),
+		Count:   headerPar(24, "-"),
+		Filter:  headerPar(40, ""),
+		Version: headerPar(0, ""),
+		bg:      headerBg(),
 	}
 }
 
@@ -30,11 +32,13 @@ func (c *CTopHeader) Buffer() ui.Buffer {
 	buf.Merge(c.Time.Buffer())
 	buf.Merge(c.Count.Buffer())
 	buf.Merge(c.Filter.Buffer())
+	buf.Merge(c.Version.Buffer())
 	return buf
 }
 
 func (c *CTopHeader) Align() {
 	c.bg.SetWidth(ui.TermWidth() - 1)
+	c.Version.SetX(ui.TermWidth() - len(c.Version.Text) - 2)
 }
 
 func (c *CTopHeader) Height() int {
@@ -68,6 +72,11 @@ func (c *CTopHeader) SetFilter(val string) {
 	} else {
 		c.Filter.Text = fmt.Sprintf("filter: %s", val)
 	}
+}
+
+func (c *CTopHeader) SetVersion(v string) {
+	c.Version.Text = fmt.Sprintf("v%s", v)
+	c.Version.Width = len(c.Version.Text) + 2
 }
 
 func timeStr() string {

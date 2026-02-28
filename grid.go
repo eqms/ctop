@@ -53,6 +53,7 @@ func RedrawRows(clr bool) {
 	if config.GetSwitchVal("enableHeader") {
 		header.SetCount(cursor.Len())
 		header.SetFilter(config.GetVal("filterStr"))
+		header.SetVersion(version)
 		y += header.Height()
 	}
 

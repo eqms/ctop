@@ -33,4 +33,11 @@ release:
 	cd release; sha256sum --quiet --check sha256sums.txt && \
 	gh release create v$(VERSION) -d -t v$(VERSION) *
 
-.PHONY: clean build build-all run-dev image release
+update-homebrew:
+	@cp homebrew-tap/Formula/ctop.rb ../homebrew-ctop/Formula/ctop.rb
+	@cd ../homebrew-ctop && git add Formula/ctop.rb \
+		&& git commit -m "[CHG] Update ctop formula to $$(cat ../ctop/VERSION)" \
+		&& git push origin main
+	@echo "✅ homebrew-ctop updated and pushed"
+
+.PHONY: clean build build-all run-dev image release update-homebrew
