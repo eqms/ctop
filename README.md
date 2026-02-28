@@ -46,9 +46,19 @@ Die neuesten Binaries gibt es auf der [Releases-Seite](https://github.com/eqms/c
 | Windows | amd64 | `ctop-<version>-windows-amd64.exe` |
 
 ```bash
-# Beispiel: Linux amd64
-sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux-amd64 -O /usr/local/bin/ctop
+# Linux (amd64)
+sudo curl -Lo /usr/local/bin/ctop https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux-amd64
 sudo chmod +x /usr/local/bin/ctop
+
+# macOS (Apple Silicon)
+curl -Lo ctop https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-darwin-arm64
+chmod +x ctop
+sudo mv ctop /usr/local/bin/
+
+# macOS (Intel)
+curl -Lo ctop https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-darwin-amd64
+chmod +x ctop
+sudo mv ctop /usr/local/bin/
 ```
 
 > **macOS Hinweis**: Beim Download über einen Browser setzt macOS das Quarantine-Flag, wodurch Gatekeeper die Ausführung blockiert. Abhilfe:
@@ -57,7 +67,7 @@ sudo chmod +x /usr/local/bin/ctop
 > xattr -d com.apple.quarantine ./ctop-0.8.0-darwin-arm64
 > chmod +x ./ctop-0.8.0-darwin-arm64
 > ```
-> Alternativ: Download per `curl` oder `wget` — dabei wird kein Quarantine-Flag gesetzt.
+> Bei Installation per `curl` (wie oben) wird kein Quarantine-Flag gesetzt.
 
 #### Homebrew (macOS & Linux)
 
@@ -234,9 +244,19 @@ Get the latest binaries from the [Releases page](https://github.com/eqms/ctop/re
 | Windows | amd64 | `ctop-<version>-windows-amd64.exe` |
 
 ```bash
-# Example: Linux amd64
-sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux-amd64 -O /usr/local/bin/ctop
+# Linux (amd64)
+sudo curl -Lo /usr/local/bin/ctop https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux-amd64
 sudo chmod +x /usr/local/bin/ctop
+
+# macOS (Apple Silicon)
+curl -Lo ctop https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-darwin-arm64
+chmod +x ctop
+sudo mv ctop /usr/local/bin/
+
+# macOS (Intel)
+curl -Lo ctop https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-darwin-amd64
+chmod +x ctop
+sudo mv ctop /usr/local/bin/
 ```
 
 > **macOS Note**: When downloading via a browser, macOS sets the quarantine flag and Gatekeeper blocks execution. Fix:
@@ -245,7 +265,7 @@ sudo chmod +x /usr/local/bin/ctop
 > xattr -d com.apple.quarantine ./ctop-0.8.0-darwin-arm64
 > chmod +x ./ctop-0.8.0-darwin-arm64
 > ```
-> Alternatively: Download via `curl` or `wget` — no quarantine flag is set.
+> When installing via `curl` (as shown above), no quarantine flag is set.
 
 #### Homebrew (macOS & Linux)
 
