@@ -51,6 +51,20 @@ sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux
 sudo chmod +x /usr/local/bin/ctop
 ```
 
+> **macOS Hinweis**: Beim Download über einen Browser setzt macOS das Quarantine-Flag, wodurch Gatekeeper die Ausführung blockiert. Abhilfe:
+> ```bash
+> # Quarantine-Flag entfernen
+> xattr -d com.apple.quarantine ./ctop-0.8.0-darwin-arm64
+> chmod +x ./ctop-0.8.0-darwin-arm64
+> ```
+> Alternativ: Download per `curl` oder `wget` — dabei wird kein Quarantine-Flag gesetzt.
+
+#### Homebrew (macOS & Linux)
+
+```bash
+brew install eqms/ctop/ctop
+```
+
 #### Docker
 
 ```bash
@@ -223,6 +237,20 @@ Get the latest binaries from the [Releases page](https://github.com/eqms/ctop/re
 # Example: Linux amd64
 sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux-amd64 -O /usr/local/bin/ctop
 sudo chmod +x /usr/local/bin/ctop
+```
+
+> **macOS Note**: When downloading via a browser, macOS sets the quarantine flag and Gatekeeper blocks execution. Fix:
+> ```bash
+> # Remove quarantine flag
+> xattr -d com.apple.quarantine ./ctop-0.8.0-darwin-arm64
+> chmod +x ./ctop-0.8.0-darwin-arm64
+> ```
+> Alternatively: Download via `curl` or `wget` — no quarantine flag is set.
+
+#### Homebrew (macOS & Linux)
+
+```bash
+brew install eqms/ctop/ctop
 ```
 
 #### Docker
