@@ -12,7 +12,7 @@ docker run -ti --rm \
            -e CTOP_DEBUG_TCP=1 \
            -p 9000:9000 \
            -v /var/run/docker.sock:/var/run/docker.sock \
-           quay.io/vektorlab/ctop:latest
+           ghcr.io/eqms/ctop:latest
 ```
 
 Log messages can be followed by connecting to the default listen address:
@@ -22,13 +22,13 @@ curl -s localhost:9000
 
 example output:
 ```
-15:06:43.881 ▶ NOTI 002 logger initialized
-15:06:43.881 ▶ INFO 003 loaded config param: "filterStr": ""
-15:06:43.881 ▶ INFO 004 loaded config param: "sortField": "state"
-15:06:43.881 ▶ INFO 005 loaded config switch: "sortReversed": false
-15:06:43.881 ▶ INFO 006 loaded config switch: "allContainers": true
-15:06:43.881 ▶ INFO 007 loaded config switch: "enableHeader": true
-15:06:43.883 ▶ INFO 008 collector started for container: 7120f83ca...
+2024/01/15 15:06:43 INFO logger initialized
+2024/01/15 15:06:43 INFO loaded config param key=filterStr value=""
+2024/01/15 15:06:43 INFO loaded config param key=sortField value=state
+2024/01/15 15:06:43 INFO loaded config switch key=sortReversed value=false
+2024/01/15 15:06:43 INFO loaded config switch key=allContainers value=true
+2024/01/15 15:06:43 INFO loaded config switch key=enableHeader value=true
+2024/01/15 15:06:43 INFO collector started container=7120f83ca...
 ...
 ```
 
