@@ -38,7 +38,7 @@ func (c *CTopHeader) Buffer() ui.Buffer {
 
 func (c *CTopHeader) Align() {
 	c.bg.SetWidth(ui.TermWidth() - 1)
-	c.Version.SetX(ui.TermWidth() - len(c.Version.Text) - 2)
+	c.alignVersion()
 }
 
 func (c *CTopHeader) Height() int {
@@ -77,6 +77,13 @@ func (c *CTopHeader) SetFilter(val string) {
 func (c *CTopHeader) SetVersion(v string) {
 	c.Version.Text = fmt.Sprintf("v%s", v)
 	c.Version.Width = len(c.Version.Text) + 2
+	c.alignVersion()
+}
+
+func (c *CTopHeader) alignVersion() {
+	if len(c.Version.Text) > 0 {
+		c.Version.SetX(ui.TermWidth() - len(c.Version.Text) - 4)
+	}
 }
 
 func timeStr() string {
