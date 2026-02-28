@@ -6,13 +6,16 @@
 
 ## Deutsche Release Notes
 
-### v0.8.1 (2026-02-28)
+### v0.8.2 (2026-02-28)
 
 #### Neue Features
-- **Versionsanzeige im Header**: Version wird rechts oben im TUI-Header angezeigt (z.B. `v0.8.1`)
+- **Versionsanzeige im Header**: Version wird rechts oben im TUI-Header angezeigt (z.B. `v0.8.2`)
 - **Konfigurierbare Shell**: Shell für `exec` ist konfigurierbar via `--shell` Flag, `CTOP_SHELL` Umgebungsvariable oder Config-Datei (Priorität: CLI > Env > Config > Default `/bin/sh`)
 - **Health-Status Spalte**: Neue optionale Spalte zeigt Health-Check-Status (`healthy`/`unhealthy`/`starting`) mit Farbkodierung
 - **Restart-Count Spalte**: Neue optionale Spalte zeigt Container-Neustarts mit Farbwarnung (>0 gelb, >5 rot)
+
+#### Bugfixes
+- Versionsanzeige im Header korrekt positioniert (nicht mehr am äußersten rechten Rand)
 
 #### CI/CD
 - **Homebrew-Tap Auto-Update**: CI-Job aktualisiert automatisch die Homebrew-Formula nach einem Release
@@ -50,13 +53,16 @@ Erster Release des gepflegten Forks von [bcicen/ctop](https://github.com/bcicen/
 
 ## English Release Notes
 
-### v0.8.1 (2026-02-28)
+### v0.8.2 (2026-02-28)
 
 #### New Features
-- **Version display in header**: Version is shown in the top-right corner of the TUI header (e.g. `v0.8.1`)
+- **Version display in header**: Version is shown in the top-right corner of the TUI header (e.g. `v0.8.2`)
 - **Configurable shell**: Shell for `exec` is configurable via `--shell` flag, `CTOP_SHELL` environment variable, or config file (priority: CLI > Env > Config > Default `/bin/sh`)
 - **Health status column**: New optional column shows health check status (`healthy`/`unhealthy`/`starting`) with color coding
 - **Restart count column**: New optional column shows container restart count with color warnings (>0 yellow, >5 red)
+
+#### Bugfixes
+- Fixed header version positioning (no longer at the very edge of the terminal)
 
 #### CI/CD
 - **Homebrew tap auto-update**: CI job automatically updates the Homebrew formula after a release
