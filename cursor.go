@@ -51,7 +51,9 @@ func (gc *GridCursor) RefreshContainers() (bool, error) {
 		gc.Reset()
 	}
 
-	return oldLen != gc.Len(), nil
+	// Only clear screen when container count shrinks (stale rows need clearing).
+	// Growing or unchanged count can overwrite in place without flicker.
+	return oldLen > gc.Len(), nil
 }
 
 // Set an initial cursor position, if possible

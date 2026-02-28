@@ -159,6 +159,30 @@ func (c *Container) Restart() {
 	}
 }
 
+func (c *Container) Commit(repo, tag string) {
+	if err := c.manager.Commit(repo, tag); err != nil {
+		log.Warningf("container %s: %v", c.Id, err)
+		log.StatusErr(err)
+		return
+	}
+	log.Statusf("committed %s as %s:%s", c.GetMeta("name"), repo, tag)
+}
+
+func (c *Container) StopAndRemove() {
+	if c.Meta["state"] == running {
+		if err := c.manager.Stop(); err != nil {
+			log.Warningf("container %s: %v", c.Id, err)
+			log.StatusErr(err)
+			return
+		}
+		c.SetState("exited")
+	}
+	if err := c.manager.Remove(); err != nil {
+		log.Warningf("container %s: %v", c.Id, err)
+		log.StatusErr(err)
+	}
+}
+
 func (c *Container) Exec(cmd []string) error {
 	return c.manager.Exec(cmd)
 }

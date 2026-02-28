@@ -6,6 +6,15 @@
 
 ## Deutsche Release Notes
 
+### v0.8.3 (2026-02-28)
+
+#### Neue Features
+- **Flicker-Fix**: Bildschirmflackern beim 1-Sekunden-Refresh behoben — Header und Grid werden jetzt in einem einzigen Render-Aufruf gezeichnet. Screen-Clear nur noch bei schrumpfender Container-Anzahl
+- **Stop + Remove**: Neuer kombinierter Menüeintrag `[X] stop + remove` im Container-Menü für laufende Container — stoppt und entfernt in einem Schritt mit Sicherheitsabfrage
+- **Docker Commit**: Container als lokale Images speichern via `[C] commit to image` im Container-Menü — Input-Dialog mit Namensvorschlag (`<name>-snapshot`) und optionalem Tag (Standard: `latest`)
+
+---
+
 ### v0.8.2 (2026-02-28)
 
 #### Neue Features
@@ -52,6 +61,15 @@ Erster Release des gepflegten Forks von [bcicen/ctop](https://github.com/bcicen/
 ---
 
 ## English Release Notes
+
+### v0.8.3 (2026-02-28)
+
+#### New Features
+- **Flicker fix**: Eliminated screen flicker during 1-second refresh — header and grid are now drawn in a single render call. Screen clear only triggered when container count shrinks
+- **Stop + Remove**: New combined menu entry `[X] stop + remove` in container menu for running containers — stops and removes in one step with confirmation dialog
+- **Docker Commit**: Save containers as local images via `[C] commit to image` in container menu — input dialog with name suggestion (`<name>-snapshot`) and optional tag (default: `latest`)
+
+---
 
 ### v0.8.2 (2026-02-28)
 

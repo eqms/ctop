@@ -149,3 +149,15 @@ func (dc *Docker) Restart() error {
 	}
 	return nil
 }
+
+func (dc *Docker) Commit(repo, tag string) error {
+	_, err := dc.client.CommitContainer(api.CommitContainerOptions{
+		Container:  dc.id,
+		Repository: repo,
+		Tag:        tag,
+	})
+	if err != nil {
+		return fmt.Errorf("cannot commit container: %v", err)
+	}
+	return nil
+}

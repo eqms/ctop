@@ -67,11 +67,15 @@ func RedrawRows(clr bool) {
 		ui.Clear()
 		log.Debugf("screen cleared")
 	}
-	if config.GetSwitchVal("enableHeader") {
-		ui.Render(header)
-	}
+
 	cGrid.Align()
-	ui.Render(cGrid)
+
+	// Single render call to prevent screen flicker between header and grid draw
+	if config.GetSwitchVal("enableHeader") {
+		ui.Render(header, cGrid)
+	} else {
+		ui.Render(cGrid)
+	}
 }
 
 func SingleView() MenuFn {

@@ -222,6 +222,7 @@ func ContainerMenu() MenuFn {
 		items = append(items, menu.Item{Val: "stop", Label: "[s] stop"})
 		items = append(items, menu.Item{Val: "pause", Label: "[p] pause"})
 		items = append(items, menu.Item{Val: "restart", Label: "[r] restart"})
+		items = append(items, menu.Item{Val: "stopremove", Label: "[X] stop + remove"})
 		items = append(items, menu.Item{Val: "exec", Label: "[e] exec shell"})
 		if c.Meta["Web Port"] != "" {
 			items = append(items, menu.Item{Val: "browser", Label: "[w] open in browser"})
@@ -234,6 +235,7 @@ func ContainerMenu() MenuFn {
 	if c.Meta["state"] == "paused" {
 		items = append(items, menu.Item{Val: "unpause", Label: "[p] unpause"})
 	}
+	items = append(items, menu.Item{Val: "commit", Label: "[C] commit to image"})
 	items = append(items, menu.Item{Val: "cancel", Label: "[c] cancel"})
 
 	m.AddItems(items...)
@@ -292,6 +294,14 @@ func ContainerMenu() MenuFn {
 		selected = "remove"
 		ui.StopLoop()
 	})
+	ui.Handle("/sys/kbd/X", func(ui.Event) {
+		selected = "stopremove"
+		ui.StopLoop()
+	})
+	ui.Handle("/sys/kbd/C", func(ui.Event) {
+		selected = "commit"
+		ui.StopLoop()
+	})
 	ui.Handle("/sys/kbd/c", func(ui.Event) {
 		ui.StopLoop()
 	})
@@ -327,6 +337,10 @@ func ContainerMenu() MenuFn {
 		nextMenu = Confirm(confirmTxt("unpause", c.GetMeta("name")), c.Unpause)
 	case "restart":
 		nextMenu = Confirm(confirmTxt("restart", c.GetMeta("name")), c.Restart)
+	case "stopremove":
+		nextMenu = Confirm(confirmTxt("stop and remove", c.GetMeta("name")), c.StopAndRemove)
+	case "commit":
+		nextMenu = CommitMenu
 	}
 
 	return nextMenu
@@ -483,6 +497,62 @@ func logReader(container *container.Container) (logs chan widgets.ToggleText, qu
 		}
 	}()
 	return
+}
+
+func CommitMenu() MenuFn {
+	c := cursor.Selected()
+	if c == nil {
+		return nil
+	}
+
+	ui.DefaultEvtStream.ResetHandlers()
+	defer ui.DefaultEvtStream.ResetHandlers()
+
+	// Generate suggested image name from container name
+	name := strings.ReplaceAll(c.GetMeta("name"), "/", "-")
+	suggested := fmt.Sprintf("%s-snapshot", name)
+
+	i := widgets.NewInput()
+	i.BorderLabel = "Commit as Image"
+	i.MaxLen = 60
+	i.SetY(ui.TermHeight() - i.Height)
+	i.Data = suggested
+	ui.Render(i)
+
+	stream := i.Stream()
+	go func() {
+		for range stream {
+			ui.Render(i)
+		}
+	}()
+
+	var imageName string
+	i.InputHandlers()
+	ui.Handle("/sys/kbd/<escape>", func(ui.Event) {
+		ui.StopLoop()
+	})
+	ui.Handle("/sys/kbd/<enter>", func(ui.Event) {
+		imageName = i.Data
+		ui.StopLoop()
+	})
+	ui.Loop()
+
+	if imageName == "" {
+		return nil
+	}
+
+	// Split repo:tag
+	repo := imageName
+	tag := "latest"
+	if idx := strings.LastIndex(imageName, ":"); idx > 0 {
+		repo = imageName[:idx]
+		tag = imageName[idx+1:]
+	}
+
+	return Confirm(
+		fmt.Sprintf("commit %s as %s:%s?", c.GetMeta("name"), repo, tag),
+		func() { c.Commit(repo, tag) },
+	)
 }
 
 func confirmTxt(a, n string) string { return fmt.Sprintf("%s container %s?", a, n) }

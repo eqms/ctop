@@ -8,7 +8,7 @@
 class Ctop < Formula
   desc "Top-like interface for container metrics"
   homepage "https://github.com/eqms/ctop"
-  version "0.8.2"
+  version "0.8.3"
   license "MIT"
 
   on_macos do
