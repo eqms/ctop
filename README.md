@@ -22,6 +22,8 @@ Unterstützte Container-Runtimes: **Docker** und **runC**.
 
 Dies ist ein gepflegter Fork von [bcicen/ctop](https://github.com/bcicen/ctop), ursprünglich erstellt von [VektorLab](https://github.com/vektorlab).
 
+`ctop` ist für mich ein unverzichtbares Werkzeug im täglichen Umgang mit Containern — kompakt, schnell und auf den Punkt. Leider wird das Original-Projekt seit längerer Zeit nicht mehr aktiv weiterentwickelt. Da ich das Tool regelmäßig nutze und es nicht aufgeben möchte, pflege ich es hier als eigenständigen Fork weiter: mit aktuellen Abhängigkeiten, Security-Fixes und modernem Go.
+
 Änderungen in diesem Fork:
 - Security-Fixes (Shell-Injection, Dateiberechtigungen, Debug-Server-Binding)
 - Aktualisierung auf Go 1.22 mit modernen stdlib-Paketen (`log/slog`, `os.ReadDir`)
@@ -45,7 +47,7 @@ Die neuesten Binaries gibt es auf der [Releases-Seite](https://github.com/eqms/c
 
 ```bash
 # Beispiel: Linux amd64
-sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.7.7-linux-amd64 -O /usr/local/bin/ctop
+sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux-amd64 -O /usr/local/bin/ctop
 sudo chmod +x /usr/local/bin/ctop
 ```
 
@@ -194,6 +196,8 @@ Supported container runtimes: **Docker** and **runC**.
 
 This is a maintained fork of [bcicen/ctop](https://github.com/bcicen/ctop), originally created by [VektorLab](https://github.com/vektorlab).
 
+`ctop` is an indispensable tool in my daily work with containers — compact, fast and to the point. Unfortunately, the original project is no longer actively maintained. Since I use this tool on a regular basis and don't want to let it go, I maintain it here as an independent fork: with up-to-date dependencies, security fixes and modern Go.
+
 Changes in this fork:
 - Security fixes (shell injection, file permissions, debug server binding)
 - Updated to Go 1.22 with modern stdlib packages (`log/slog`, `os.ReadDir`)
@@ -217,7 +221,7 @@ Get the latest binaries from the [Releases page](https://github.com/eqms/ctop/re
 
 ```bash
 # Example: Linux amd64
-sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.7.7-linux-amd64 -O /usr/local/bin/ctop
+sudo wget https://github.com/eqms/ctop/releases/latest/download/ctop-0.8.0-linux-amd64 -O /usr/local/bin/ctop
 sudo chmod +x /usr/local/bin/ctop
 ```
 
