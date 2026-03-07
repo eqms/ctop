@@ -1,12 +1,13 @@
 package manager
 
 import (
-	"errors"
 	"fmt"
-	"io"
 	"os"
+	"os/signal"
+	"syscall"
 
 	api "github.com/fsouza/go-dockerclient"
+	"golang.org/x/term"
 )
 
 type Docker struct {
@@ -21,66 +22,6 @@ func NewDocker(client *api.Client, id string) *Docker {
 	}
 }
 
-// Do not allow to close reader (i.e. /dev/stdin which docker client tries to close after command execution)
-type noClosableReader struct {
-	io.Reader
-}
-
-func (w *noClosableReader) Read(p []byte) (n int, err error) {
-	return w.Reader.Read(p)
-}
-
-const (
-	STDIN  = 0
-	STDOUT = 1
-	STDERR = 2
-)
-
-var wrongFrameFormat = errors.New("Wrong frame format")
-
-// A frame has a Header and a Payload
-// Header: [8]byte{STREAM_TYPE, 0, 0, 0, SIZE1, SIZE2, SIZE3, SIZE4}
-// STREAM_TYPE can be:
-//    0: stdin (is written on stdout)
-//    1: stdout
-//    2: stderr
-// SIZE1, SIZE2, SIZE3, SIZE4 are the four bytes of the uint32 size encoded as big endian.
-// But we don't use size, because we don't need to find the end of frame.
-type frameWriter struct {
-	stdout io.Writer
-	stderr io.Writer
-	stdin  io.Writer
-}
-
-func (w *frameWriter) Write(p []byte) (n int, err error) {
-	// drop initial empty frames
-	if len(p) == 0 {
-		return 0, nil
-	}
-
-	if len(p) > 8 {
-		var targetWriter io.Writer
-		switch p[0] {
-		case STDIN:
-			targetWriter = w.stdin
-			break
-		case STDOUT:
-			targetWriter = w.stdout
-			break
-		case STDERR:
-			targetWriter = w.stderr
-			break
-		default:
-			return 0, wrongFrameFormat
-		}
-
-		n, err := targetWriter.Write(p[8:])
-		return n + 8, err
-	}
-
-	return 0, wrongFrameFormat
-}
-
 func (dc *Docker) Exec(cmd []string) error {
 	execCmd, err := dc.client.CreateExec(api.CreateExecOptions{
 		AttachStdin:  true,
@@ -90,17 +31,51 @@ func (dc *Docker) Exec(cmd []string) error {
 		Container:    dc.id,
 		Tty:          true,
 	})
-
 	if err != nil {
 		return err
 	}
 
-	return dc.client.StartExec(execCmd.ID, api.StartExecOptions{
-		InputStream:  &noClosableReader{os.Stdin},
-		OutputStream: &frameWriter{os.Stdout, os.Stderr, os.Stdin},
+	// Set host terminal to raw mode for interactive shell
+	fd := int(os.Stdin.Fd())
+	oldState, err := term.MakeRaw(fd)
+	if err != nil {
+		return fmt.Errorf("cannot set terminal raw mode: %v", err)
+	}
+	defer term.Restore(fd, oldState)
+
+	// Set initial TTY size
+	if w, h, err := term.GetSize(fd); err == nil {
+		dc.client.ResizeExecTTY(execCmd.ID, h, w)
+	}
+
+	// Handle terminal resize (SIGWINCH)
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, syscall.SIGWINCH)
+	defer signal.Stop(sigCh)
+	go func() {
+		for range sigCh {
+			if w, h, err := term.GetSize(fd); err == nil {
+				dc.client.ResizeExecTTY(execCmd.ID, h, w)
+			}
+		}
+	}()
+
+	// With Tty: true, Docker sends raw terminal data (no frame headers),
+	// so we write directly to os.Stdout instead of using a frameWriter.
+	cw, err := dc.client.StartExecNonBlocking(execCmd.ID, api.StartExecOptions{
+		InputStream:  os.Stdin,
+		OutputStream: os.Stdout,
 		ErrorStream:  os.Stderr,
+		Tty:          true,
 		RawTerminal:  true,
 	})
+	if err != nil {
+		return err
+	}
+	if cw != nil {
+		return cw.Wait()
+	}
+	return nil
 }
 
 func (dc *Docker) Start() error {
