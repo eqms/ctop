@@ -6,6 +6,13 @@
 
 ## Deutsche Release Notes
 
+### v0.8.5 (2026-03-29)
+
+#### Bugfixes
+- **Menü-Redraw Fix**: Nach Rückkehr aus der Container-Shell wird das Hintergrund-Grid jetzt korrekt neu gezeichnet und das Container-Menü wieder fokussiert
+
+---
+
 ### v0.8.4 (2026-02-28)
 
 #### Bugfixes
@@ -69,6 +76,13 @@ Erster Release des gepflegten Forks von [bcicen/ctop](https://github.com/bcicen/
 ---
 
 ## English Release Notes
+
+### v0.8.5 (2026-03-29)
+
+#### Bugfixes
+- **Menu redraw fix**: After returning from container shell, the background grid is now correctly redrawn and the container menu is refocused
+
+---
 
 ### v0.8.4 (2026-02-28)
 

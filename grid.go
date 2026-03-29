@@ -4,10 +4,11 @@ import (
 	"github.com/eqms/ctop/config"
 	"github.com/eqms/ctop/cwidgets/single"
 	ui "github.com/gizak/termui"
+	tm "github.com/nsf/termbox-go"
 )
 
 func ShowConnError(err error) (exit bool) {
-	ui.Clear()
+	tm.Clear(tm.ColorDefault, tm.ColorDefault)
 	ui.DefaultEvtStream.ResetHandlers()
 	defer ui.DefaultEvtStream.ResetHandlers()
 
@@ -33,7 +34,7 @@ func ShowConnError(err error) (exit bool) {
 
 	ui.Handle("/sys/wnd/resize", func(e ui.Event) {
 		errView.Resize()
-		ui.Clear()
+		tm.Clear(tm.ColorDefault, tm.ColorDefault)
 		ui.Render(errView)
 		log.Infof("RESIZE")
 	})
@@ -64,7 +65,7 @@ func RedrawRows(clr bool) {
 	}
 
 	if clr {
-		ui.Clear()
+		tm.Clear(tm.ColorDefault, tm.ColorDefault)
 		log.Debugf("screen cleared")
 	}
 
@@ -84,7 +85,7 @@ func SingleView() MenuFn {
 		return nil
 	}
 
-	ui.Clear()
+	tm.Clear(tm.ColorDefault, tm.ColorDefault)
 	ui.DefaultEvtStream.ResetHandlers()
 	defer ui.DefaultEvtStream.ResetHandlers()
 

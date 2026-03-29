@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 
 	api "github.com/fsouza/go-dockerclient"
 )
@@ -41,9 +42,11 @@ var wrongFrameFormat = errors.New("Wrong frame format")
 // A frame has a Header and a Payload
 // Header: [8]byte{STREAM_TYPE, 0, 0, 0, SIZE1, SIZE2, SIZE3, SIZE4}
 // STREAM_TYPE can be:
-//    0: stdin (is written on stdout)
-//    1: stdout
-//    2: stderr
+//
+//	0: stdin (is written on stdout)
+//	1: stdout
+//	2: stderr
+//
 // SIZE1, SIZE2, SIZE3, SIZE4 are the four bytes of the uint32 size encoded as big endian.
 // But we don't use size, because we don't need to find the end of frame.
 type frameWriter struct {
@@ -82,25 +85,15 @@ func (w *frameWriter) Write(p []byte) (n int, err error) {
 }
 
 func (dc *Docker) Exec(cmd []string) error {
-	execCmd, err := dc.client.CreateExec(api.CreateExecOptions{
-		AttachStdin:  true,
-		AttachStdout: true,
-		AttachStderr: true,
-		Cmd:          cmd,
-		Container:    dc.id,
-		Tty:          true,
-	})
+	args := []string{"exec", "-it", dc.id}
+	args = append(args, cmd...)
 
-	if err != nil {
-		return err
-	}
+	execCmd := exec.Command("docker", args...)
+	execCmd.Stdin = os.Stdin
+	execCmd.Stdout = os.Stdout
+	execCmd.Stderr = os.Stderr
 
-	return dc.client.StartExec(execCmd.ID, api.StartExecOptions{
-		InputStream:  &noClosableReader{os.Stdin},
-		OutputStream: &frameWriter{os.Stdout, os.Stderr, os.Stdin},
-		ErrorStream:  os.Stderr,
-		RawTerminal:  true,
-	})
+	return execCmd.Run()
 }
 
 func (dc *Docker) Start() error {

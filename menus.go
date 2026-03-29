@@ -36,7 +36,7 @@ var helpDialog = []menu.Item{
 }
 
 func HelpMenu() MenuFn {
-	ui.Clear()
+	tm.Clear(tm.ColorDefault, tm.ColorDefault)
 	ui.DefaultEvtStream.ResetHandlers()
 	defer ui.DefaultEvtStream.ResetHandlers()
 
@@ -44,7 +44,7 @@ func HelpMenu() MenuFn {
 	m.BorderLabel = "Help"
 	m.AddItems(helpDialog...)
 	ui.Handle("/sys/wnd/resize", func(e ui.Event) {
-		ui.Clear()
+		tm.Clear(tm.ColorDefault, tm.ColorDefault)
 		ui.Render(m)
 	})
 	ui.Handle("/sys/kbd/", func(ui.Event) {
@@ -88,7 +88,7 @@ func FilterMenu() MenuFn {
 }
 
 func SortMenu() MenuFn {
-	ui.Clear()
+	tm.Clear(tm.ColorDefault, tm.ColorDefault)
 	ui.DefaultEvtStream.ResetHandlers()
 	defer ui.DefaultEvtStream.ResetHandlers()
 
@@ -125,7 +125,7 @@ func ColumnsMenu() MenuFn {
 		padding     = 2
 	)
 
-	ui.Clear()
+	tm.Clear(tm.ColorDefault, tm.ColorDefault)
 	ui.DefaultEvtStream.ResetHandlers()
 	defer ui.DefaultEvtStream.ResetHandlers()
 
@@ -388,7 +388,17 @@ func ExecShell() MenuFn {
 	// Execute a login shell directly in the container.
 	// The shell is configurable via --shell flag, CTOP_SHELL env, or config file.
 	shell := config.GetVal("shell")
-	if err := c.Exec([]string{shell, "-l"}); err != nil {
+	var execCmd []string
+	if shell == "/bin/sh" || shell == "sh" || shell == "" {
+		execCmd = []string{
+			"sh", "-c",
+			`if command -v fish >/dev/null 2>&1; then exec fish -l; elif command -v zsh >/dev/null 2>&1; then exec zsh -l; elif command -v bash >/dev/null 2>&1; then exec bash -l; else exec sh -l; fi`,
+		}
+	} else {
+		execCmd = []string{shell, "-l"}
+	}
+
+	if err := c.Exec(execCmd); err != nil {
 		log.StatusErr(err)
 	}
 
@@ -397,8 +407,13 @@ func ExecShell() MenuFn {
 		panic(err)
 	}
 	tm.SetInputMode(tm.InputAlt)
+	tm.Sync()
+	tm.Clear(tm.ColorDefault, tm.ColorDefault)
 
-	return nil
+	// Hintergrund neu zeichnen bevor das Menü wieder gerendert wird
+	RefreshDisplay()
+
+	return ContainerMenu
 }
 
 func OpenInBrowser() MenuFn {
