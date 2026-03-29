@@ -288,6 +288,7 @@ func ContainerMenu() MenuFn {
 		if c.Meta["Web Port"] != "" {
 			ui.Handle("/sys/kbd/w", func(ui.Event) {
 				selected = "browser"
+				ui.StopLoop()
 			})
 		}
 	}
@@ -388,6 +389,13 @@ func ExecShell() MenuFn {
 	// Execute a login shell directly in the container.
 	// The shell is configurable via --shell flag, CTOP_SHELL env, or config file.
 	shell := config.GetVal("shell")
+
+	// Validate shell against whitelist to prevent arbitrary command execution
+	if shell != "" && !isAllowedShell(shell) {
+		log.StatusErr(fmt.Errorf("shell not allowed: %s (allowed: sh, bash, zsh, fish, or absolute paths under /bin/ /usr/bin/)", shell))
+		return ContainerMenu
+	}
+
 	var execCmd []string
 	if shell == "/bin/sh" || shell == "sh" || shell == "" {
 		execCmd = []string{
@@ -578,3 +586,15 @@ func CommitMenu() MenuFn {
 }
 
 func confirmTxt(a, n string) string { return fmt.Sprintf("%s container %s?", a, n) }
+
+// isAllowedShell validates the shell path against a whitelist of known shells.
+var allowedShells = map[string]bool{
+	"sh": true, "bash": true, "zsh": true, "fish": true,
+	"/bin/sh": true, "/bin/bash": true, "/bin/zsh": true, "/bin/fish": true,
+	"/usr/bin/sh": true, "/usr/bin/bash": true, "/usr/bin/zsh": true, "/usr/bin/fish": true,
+	"/usr/local/bin/bash": true, "/usr/local/bin/zsh": true, "/usr/local/bin/fish": true,
+}
+
+func isAllowedShell(shell string) bool {
+	return allowedShells[shell]
+}

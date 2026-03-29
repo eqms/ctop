@@ -1,6 +1,8 @@
 package compact
 
 import (
+	"fmt"
+
 	"github.com/eqms/ctop/config"
 	"github.com/eqms/ctop/models"
 
@@ -37,7 +39,7 @@ func newRowWidgets() []CompactCol {
 	for n, name := range enabled {
 		wFn, ok := allCols[name]
 		if !ok {
-			panic("no such widget name: %s" + name)
+			panic(fmt.Sprintf("no such widget name: %s", name))
 		}
 		cols[n] = wFn()
 	}

@@ -284,9 +284,9 @@ func (cm *Docker) MustGet(id string) *container.Container {
 
 // Docker implements Connector
 func (cm *Docker) Get(id string) (*container.Container, bool) {
-	cm.lock.Lock()
+	cm.lock.RLock()
 	c, ok := cm.containers[id]
-	cm.lock.Unlock()
+	cm.lock.RUnlock()
 	return c, ok
 }
 
@@ -300,14 +300,14 @@ func (cm *Docker) delByID(id string) {
 
 // Docker implements Connector
 func (cm *Docker) All() (containers container.Containers) {
-	cm.lock.Lock()
+	cm.lock.RLock()
 	for _, c := range cm.containers {
 		containers = append(containers, c)
 	}
+	cm.lock.RUnlock()
 
 	containers.Sort()
 	containers.Filter()
-	cm.lock.Unlock()
 	return containers
 }
 

@@ -39,7 +39,7 @@ func runtimeStats() {
 func runtimeStack() {
 	buf := make([]byte, 32768)
 	buf = buf[:runtime.Stack(buf, true)]
-	log.Infof(fmt.Sprintf("stack:\n%v", string(buf)))
+	log.Infof("stack:\n%s", string(buf))
 }
 
 // log container, metrics, and widget state
@@ -49,7 +49,7 @@ func dumpContainer(c *container.Container) {
 		msg += fmt.Sprintf("Meta.%s = %s\n", k, v)
 	}
 	msg += inspect(&c.Metrics)
-	log.Infof(msg)
+	log.Infof("%s", msg)
 }
 
 func inspect(i interface{}) (s string) {
