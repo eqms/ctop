@@ -10,8 +10,8 @@ import (
 var sysMemTotal = getSysMemTotal()
 
 const (
-	clockTicksPerSecond  uint64  = 100
-	nanoSecondsPerSecond float64 = 1e9
+	clockTicksPerSecond  uint64 = 100
+	nanoSecondsPerSecond uint64 = 1e9
 )
 
 func getSysMemTotal() int64 {
