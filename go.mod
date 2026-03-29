@@ -20,7 +20,7 @@ require (
 	github.com/Microsoft/go-winio v0.4.16 // indirect
 	github.com/Microsoft/hcsshim v0.8.10 // indirect
 	github.com/checkpoint-restore/go-criu/v5 v5.3.0 // indirect
-	github.com/cilium/ebpf v0.16.0 // indirect
+	github.com/cilium/ebpf v0.7.0 // indirect
 	github.com/containerd/cgroups v0.0.0-20200531161412-0dbf7f05ba59 // indirect
 	github.com/containerd/console v1.0.5 // indirect
 	github.com/containerd/containerd v1.4.1 // indirect
@@ -32,6 +32,7 @@ require (
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
 	github.com/maruel/panicparse v1.6.1 // indirect
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
@@ -52,7 +53,6 @@ require (
 	github.com/vishvananda/netlink v1.3.0 // indirect
 	github.com/vishvananda/netns v0.0.5 // indirect
 	go.opencensus.io v0.22.0 // indirect
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
