@@ -18,7 +18,7 @@ func (l *MockLogs) Stream() chan models.Log {
 		for {
 			select {
 			case <-l.done:
-				break
+				return
 			default:
 				logCh <- models.Log{Timestamp: time.Now(), Message: mockLog}
 				time.Sleep(250 * time.Millisecond)

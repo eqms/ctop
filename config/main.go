@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"os"
 	"sync"
 
 	"github.com/eqms/ctop/logging"
@@ -34,13 +33,4 @@ func Init() {
 
 func quote(s string) string {
 	return fmt.Sprintf("\"%s\"", s)
-}
-
-// Return env var value if set, else return defaultVal
-func getEnv(key, defaultVal string) string {
-	val := os.Getenv(key)
-	if val != "" {
-		return val
-	}
-	return defaultVal
 }

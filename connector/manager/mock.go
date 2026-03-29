@@ -7,33 +7,33 @@ func NewMock() *Mock {
 }
 
 func (m *Mock) Start() error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }
 
 func (m *Mock) Stop() error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }
 
 func (m *Mock) Remove() error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }
 
 func (m *Mock) Pause() error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }
 
 func (m *Mock) Unpause() error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }
 
 func (m *Mock) Restart() error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }
 
 func (m *Mock) Exec(cmd []string) error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }
 
 func (m *Mock) Commit(repo, tag string) error {
-	return ActionNotImplErr
+	return ErrActionNotImpl
 }

@@ -20,13 +20,6 @@ func NewLogLines(max int) *LogLines {
 	return ll
 }
 
-func (ll *LogLines) tail(n int) []string {
-	lines := make([]string, n)
-	for i := 0; i < n; i++ {
-		lines = append(lines, ll.data[len(ll.data)-i])
-	}
-	return lines
-}
 func (ll *LogLines) getLines(start, end int) []string {
 	if end < 0 {
 		return ll.data[start:]
@@ -78,6 +71,3 @@ func (w *Logs) Buffer() ui.Buffer {
 	w.Items = w.lines.getLines(offset, -1)
 	return w.List.Buffer()
 }
-
-// number of rows a line will occupy at current panel width
-func (w *Logs) lineHeight(s string) int { return (len(s) / w.InnerWidth()) + 1 }

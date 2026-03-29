@@ -2,7 +2,7 @@ package manager
 
 import "errors"
 
-var ActionNotImplErr = errors.New("action not implemented")
+var ErrActionNotImpl = errors.New("action not implemented")
 
 type Manager interface {
 	Start() error

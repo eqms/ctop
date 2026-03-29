@@ -37,7 +37,7 @@ func (c *Docker) Start() {
 			Stream: true,
 			Done:   c.done,
 		}
-		c.client.Stats(opts)
+		_ = c.client.Stats(opts)
 		c.running = false
 	}()
 

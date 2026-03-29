@@ -3,13 +3,10 @@ package main
 import (
 	"fmt"
 	"reflect"
-	"runtime"
 
 	"github.com/eqms/ctop/container"
 	ui "github.com/gizak/termui"
 )
-
-var mstats = &runtime.MemStats{}
 
 func logEvent(e ui.Event) {
 	// skip timer events e.g. /timer/1s
@@ -24,22 +21,6 @@ func logEvent(e ui.Event) {
 		s += fmt.Sprintf(" To=%s", quote(e.To))
 	}
 	log.Debugf("new event: %s", s)
-}
-
-func runtimeStats() {
-	var msg string
-	msg += fmt.Sprintf("cgo calls=%v", runtime.NumCgoCall())
-	msg += fmt.Sprintf(" routines=%v", runtime.NumGoroutine())
-	runtime.ReadMemStats(mstats)
-	msg += fmt.Sprintf(" numgc=%v", mstats.NumGC)
-	msg += fmt.Sprintf(" alloc=%v", mstats.Alloc)
-	log.Debugf("runtime: %v", msg)
-}
-
-func runtimeStack() {
-	buf := make([]byte, 32768)
-	buf = buf[:runtime.Stack(buf, true)]
-	log.Infof("stack:\n%s", string(buf))
 }
 
 // log container, metrics, and widget state

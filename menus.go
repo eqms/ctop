@@ -69,7 +69,7 @@ func FilterMenu() MenuFn {
 	go func() {
 		for s := range stream {
 			config.Update("filterStr", s)
-			RefreshDisplay()
+			_ = RefreshDisplay()
 			ui.Render(i)
 		}
 	}()
@@ -419,7 +419,7 @@ func ExecShell() MenuFn {
 	tm.Clear(tm.ColorDefault, tm.ColorDefault)
 
 	// Hintergrund neu zeichnen bevor das Menü wieder gerendert wird
-	RefreshDisplay()
+	_ = RefreshDisplay()
 
 	return ContainerMenu
 }
@@ -435,7 +435,7 @@ func OpenInBrowser() MenuFn {
 		return nil
 	}
 	link := "http://" + webPort + "/"
-	browser.OpenURL(link)
+	_ = browser.OpenURL(link)
 	return nil
 }
 

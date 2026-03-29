@@ -124,7 +124,7 @@ func (h *ctopHandler) Handle(_ context.Context, r slog.Record) error {
 
 	h.mu.Lock()
 	if h.file != nil {
-		fmt.Fprintln(h.file, msg)
+		_, _ = fmt.Fprintln(h.file, msg)
 	}
 	h.mu.Unlock()
 
@@ -165,7 +165,7 @@ type CTopLogger struct {
 // Convenience logging methods (matching the old op/go-logging API)
 
 func (c *CTopLogger) Debugf(format string, args ...interface{}) {
-	c.Logger.Debug(fmt.Sprintf(format, args...))
+	c.Debug(fmt.Sprintf(format, args...))
 }
 
 func (c *CTopLogger) Infof(format string, args ...interface{}) {
@@ -177,11 +177,11 @@ func (c *CTopLogger) Info(msg string) {
 }
 
 func (c *CTopLogger) Warningf(format string, args ...interface{}) {
-	c.Logger.Warn(fmt.Sprintf(format, args...))
+	c.Warn(fmt.Sprintf(format, args...))
 }
 
 func (c *CTopLogger) Errorf(format string, args ...interface{}) {
-	c.Logger.Error(fmt.Sprintf(format, args...))
+	c.Error(fmt.Sprintf(format, args...))
 }
 
 func (c *CTopLogger) Notice(msg string) {

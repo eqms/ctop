@@ -53,7 +53,6 @@ func (c *Mock) Logs() LogCollector {
 
 func (c *Mock) run() {
 	c.running = true
-	rand.Seed(int64(time.Now().Nanosecond()))
 	defer close(c.stream)
 
 	// set to random static value, once

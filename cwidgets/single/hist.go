@@ -51,7 +51,7 @@ func NewFloatHist(max int) FloatHist {
 	}
 }
 
-func (h FloatHist) Append(val float64) {
+func (h *FloatHist) Append(val float64) {
 	if len(h.Data) == cap(h.Data) {
 		h.Data = append(h.Data[:0], h.Data[1:]...)
 	}

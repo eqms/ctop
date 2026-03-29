@@ -105,7 +105,7 @@ func (cs *Mock) All() container.Containers {
 }
 
 func makeID() string {
-	return strings.Replace(uuid.New().String(), "-", "", -1)[:12]
+	return strings.ReplaceAll(uuid.New().String(), "-", "")[:12]
 }
 
 func makeName() string {
@@ -117,7 +117,7 @@ func makeName() string {
 	if err != nil {
 		panic(err)
 	}
-	return strings.Replace(n, "-", "_", -1)
+	return strings.ReplaceAll(n, "-", "_")
 }
 
 func makeState() string {

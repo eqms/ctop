@@ -38,7 +38,8 @@ func StartServer() {
 		for {
 			conn, err := server.ln.Accept()
 			if err != nil {
-				if nErr, ok := err.(net.Error); ok && nErr.Temporary() {
+				// Check if the error is a timeout (Temporary is deprecated since Go 1.18)
+				if nErr, ok := err.(net.Error); ok && nErr.Timeout() {
 					continue
 				}
 				return
@@ -53,14 +54,14 @@ func StartServer() {
 func StopServer() {
 	server.wg.Wait()
 	if server.ln != nil {
-		server.ln.Close()
+		_ = server.ln.Close()
 	}
 }
 
 func handler(wc io.WriteCloser) {
 	server.wg.Add(1)
 	defer server.wg.Done()
-	defer wc.Close()
+	defer func() { _ = wc.Close() }()
 
 	ch := Log.tail()
 	defer Log.untail(ch)
@@ -69,12 +70,12 @@ func handler(wc io.WriteCloser) {
 		select {
 		case msg, ok := <-ch:
 			if !ok {
-				wc.Write([]byte("bye\n"))
+				_, _ = wc.Write([]byte("bye\n"))
 				return
 			}
-			fmt.Fprintf(wc, "%s\n", msg)
+			_, _ = fmt.Fprintf(wc, "%s\n", msg)
 		case <-Log.done:
-			wc.Write([]byte("bye\n"))
+			_, _ = wc.Write([]byte("bye\n"))
 			return
 		}
 	}

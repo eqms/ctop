@@ -1,11 +1,8 @@
 package cwidgets
 
 import (
-	"github.com/eqms/ctop/logging"
 	"github.com/eqms/ctop/models"
 )
-
-var log = logging.Init()
 
 type WidgetUpdater interface {
 	SetMeta(models.Meta)
