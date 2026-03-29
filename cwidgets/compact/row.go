@@ -24,7 +24,6 @@ type CompactRow struct {
 	Cols   []CompactCol
 	X, Y   int
 	Height int
-	widths []int // column widths
 }
 
 func NewCompactRow() *CompactRow {

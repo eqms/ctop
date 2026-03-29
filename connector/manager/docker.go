@@ -34,7 +34,7 @@ func (dc *Docker) Exec(cmd []string) error {
 }
 
 func (dc *Docker) Start() error {
-	c, err := dc.client.InspectContainer(dc.id)
+	c, err := dc.client.InspectContainerWithOptions(api.InspectContainerOptions{ID: dc.id})
 	if err != nil {
 		return fmt.Errorf("cannot inspect container: %v", err)
 	}

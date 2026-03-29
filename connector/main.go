@@ -87,7 +87,7 @@ func (cs *ConnectorSuper) loop() {
 
 // Enabled returns names for all enabled connectors on the current platform
 func Enabled() (a []string) {
-	for k, _ := range enabled {
+	for k := range enabled {
 		a = append(a, k)
 	}
 	sort.Strings(a)

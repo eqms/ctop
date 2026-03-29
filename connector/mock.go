@@ -30,8 +30,6 @@ func NewMock() (Connector, error) {
 
 // Create Mock containers
 func (cs *Mock) Init() {
-	rand.Seed(int64(time.Now().Nanosecond()))
-
 	for i := 0; i < 4; i++ {
 		cs.makeContainer(3, true)
 	}
@@ -104,24 +102,6 @@ func (cs *Mock) All() container.Containers {
 	cs.containers.Sort()
 	cs.containers.Filter()
 	return cs.containers
-}
-
-// Remove containers by ID
-func (cs *Mock) delByID(id string) {
-	for n, c := range cs.containers {
-		if c.Id == id {
-			cs.del(n)
-			return
-		}
-	}
-}
-
-// Remove one or more containers by index
-func (cs *Mock) del(idx ...int) {
-	for _, i := range idx {
-		cs.containers = append(cs.containers[:i], cs.containers[i+1:]...)
-	}
-	log.Infof("removed %d dead containers", len(idx))
 }
 
 func makeID() string {

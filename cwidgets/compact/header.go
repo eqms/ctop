@@ -8,8 +8,6 @@ type CompactHeader struct {
 	X, Y   int
 	Width  int
 	Height int
-	cols   []CompactCol
-	widths []int
 	pars   []*ui.Par
 }
 

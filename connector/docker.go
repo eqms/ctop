@@ -85,7 +85,10 @@ func (cm *Docker) watchEvents() {
 		"event": {"create", "start", "health_status", "pause", "unpause", "stop", "die", "destroy"},
 	},
 	}
-	cm.client.AddEventListenerWithOptions(opts, events)
+	if err := cm.client.AddEventListenerWithOptions(opts, events); err != nil {
+		log.Errorf("failed to add event listener: %v", err)
+		return
+	}
 
 	for e := range events {
 		actionName := e.Action
@@ -196,7 +199,7 @@ func (cm *Docker) refresh(c *container.Container) {
 }
 
 func (cm *Docker) inspect(id string) (insp *api.Container, found bool, failed bool) {
-	c, err := cm.client.InspectContainer(id)
+	c, err := cm.client.InspectContainerWithOptions(api.InspectContainerOptions{ID: id})
 	if err != nil {
 		if _, notFound := err.(*api.NoSuchContainer); notFound {
 			return c, false, false
