@@ -17,6 +17,12 @@ permissions:
   contents: write
   packages: write
 
+env:
+  # Opt in to Node.js 24 for all JavaScript actions before GitHub makes
+  # it the default on 2026-06-02. Silences the "Node.js 20 is deprecated"
+  # annotation on every job. Can be removed once the default flips.
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
