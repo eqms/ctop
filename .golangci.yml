@@ -1,34 +1,43 @@
+version: "2"
 linters:
-  enable:
-    - errcheck
-    - govet
-    - staticcheck
-    - unused
-
-linters-settings:
-  errcheck:
-    # Ignore errors from TUI rendering functions where error handling
-    # is not meaningful (terminal operations always succeed or panic)
-    exclude-functions:
-      - (*github.com/nsf/termbox-go).Clear
-      - (*github.com/nsf/termbox-go).Sync
-      - (github.com/pkg/browser).OpenURL
-      - fmt.Fprintf
-      - fmt.Fprintln
-  govet:
-    disable:
-      - composites  # Pre-existing unkeyed struct literals in TUI menu items
-
-issues:
-  exclude-rules:
-    # Ignore QF1008 "could remove embedded field" — cosmetic, not a bug
-    - linters: [staticcheck]
-      text: "QF1008"
-    # Ignore SA4004 in webPort loop — intentional early return pattern
-    - linters: [staticcheck]
-      text: "SA4004"
-      path: connector/docker.go
-    # Ignore errcheck for TUI functions where errors are not actionable
-    - linters: [errcheck]
-      path: "(grid|menus|cursor)\\.go"
-      text: "(RefreshDisplay|RefreshContainers|tm\\.Clear|tm\\.Sync)"
+  settings:
+    errcheck:
+      exclude-functions:
+        - (*github.com/nsf/termbox-go).Clear
+        - (*github.com/nsf/termbox-go).Sync
+        - (github.com/pkg/browser).OpenURL
+        - fmt.Fprintf
+        - fmt.Fprintln
+    govet:
+      disable:
+        - composites
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - staticcheck
+        text: QF1008
+      - linters:
+          - staticcheck
+        path: connector/docker.go
+        text: SA4004
+      - linters:
+          - errcheck
+        path: (grid|menus|cursor)\.go
+        text: (RefreshDisplay|RefreshContainers|tm\.Clear|tm\.Sync)
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
