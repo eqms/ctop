@@ -174,7 +174,7 @@ ctop/
 
 ### Entwicklung
 
-**Voraussetzungen**: Go 1.22+
+**Voraussetzungen**: Go 1.26+
 
 ```bash
 # Entwicklungsmodus mit Debug-Server
@@ -373,7 +373,7 @@ ctop/
 
 ### Development
 
-**Prerequisites**: Go 1.22+
+**Prerequisites**: Go 1.26+
 
 ```bash
 # Development mode with debug server

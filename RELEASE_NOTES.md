@@ -6,6 +6,26 @@
 
 ## Deutsche Release Notes
 
+### v0.8.6 (2026-04-21)
+
+#### Sicherheit
+- **runc-Upgrade v1.1.14 → v1.4.0**: Schließt drei Container-Escape-Schwachstellen (CVE-2025-31133, CVE-2025-52565, CVE-2025-52881), die in der runc 1.1.x-Reihe unpatched sind — 1.1.x ist end-of-life
+
+#### Bugfixes
+- **Race Conditions im runC-Connector** (`connector/runc.go`): Map-Zugriffe auf `libContainers` und `containers` werden jetzt korrekt mit `RLock` geschützt; `refreshAll` erstellt einen ID-Snapshot unter Lock vor dem Channel-Send
+- **nil-Channel Deadlock**: `needsRefresh`-Channel wurde im Original-Code nie initialisiert — Sends und Receives wären stillschweigend blockiert
+- **libcontainer-API-Migration**: Factory-Pattern durch direkten `libcontainer.Load(root, id)` ersetzt; `cgroups`-Paket aus `opencontainers/cgroups` bezogen (runc v1.2+ Änderung)
+
+#### Intern
+- **Go 1.24 → 1.26**: Go 1.24 EOL seit 11.02.2026
+- **golangci-lint v1 → v2**: Config-Migration und CI-Action v6 → v8
+- **Dependency Cleanup**: `cilium/ebpf` v0.7.0 → v0.17.3 entpinnt (der 1.1.14-Kompatibilitätspin ist obsolet); `fsouza/go-dockerclient` v1.7.0 → v1.13.1
+
+#### Dokumentation
+- **Bubbletea-Migrationsplan** (`_docs/bubbletea-migration-plan.md`): 6-Phasen-Plan für die Ablösung des toten TUI-Stacks (`gizak/termui` + `nsf/termbox-go`) durch den Charm-Stack
+
+---
+
 ### v0.8.5 (2026-03-29)
 
 #### Bugfixes
@@ -76,6 +96,26 @@ Erster Release des gepflegten Forks von [bcicen/ctop](https://github.com/bcicen/
 ---
 
 ## English Release Notes
+
+### v0.8.6 (2026-04-21)
+
+#### Security
+- **runc upgrade v1.1.14 → v1.4.0**: Patches three container-escape vulnerabilities (CVE-2025-31133, CVE-2025-52565, CVE-2025-52881) that remain unpatched in the runc 1.1.x line — 1.1.x is end-of-life
+
+#### Bugfixes
+- **Race conditions in the runC connector** (`connector/runc.go`): map accesses on `libContainers` and `containers` are now correctly guarded with `RLock`; `refreshAll` snapshots IDs under the lock before sending on the channel
+- **Nil-channel deadlock**: `needsRefresh` channel was never initialised in the original code — any send or receive would have silently blocked
+- **libcontainer API migration**: replaced Factory pattern with direct `libcontainer.Load(root, id)`; `cgroups` package now pulled from `opencontainers/cgroups` (runc v1.2+ split)
+
+#### Internal
+- **Go 1.24 → 1.26**: Go 1.24 reached EOL on 2026-02-11
+- **golangci-lint v1 → v2**: config migrated and CI action v6 → v8
+- **Dependency cleanup**: `cilium/ebpf` unpinned v0.7.0 → v0.17.3 (the 1.1.14-compat pin is now obsolete); `fsouza/go-dockerclient` v1.7.0 → v1.13.1
+
+#### Documentation
+- **Bubble Tea migration plan** (`_docs/bubbletea-migration-plan.md`): 6-phase plan to replace the dead TUI stack (`gizak/termui` + `nsf/termbox-go`) with the Charm stack
+
+---
 
 ### v0.8.5 (2026-03-29)
 
