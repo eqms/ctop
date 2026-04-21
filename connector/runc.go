@@ -50,9 +50,8 @@ func NewRuncOpts() (RuncOpts, error) {
 
 type Runc struct {
 	opts          RuncOpts
-	factory       libcontainer.Factory
 	containers    map[string]*container.Container
-	libContainers map[string]libcontainer.Container
+	libContainers map[string]*libcontainer.Container
 	closed        chan struct{}
 	needsRefresh  chan string // container IDs requiring refresh
 	lock          sync.RWMutex
@@ -64,17 +63,12 @@ func NewRunc() (Connector, error) {
 		return nil, err
 	}
 
-	factory, err := libcontainer.New(opts.root)
-	if err != nil {
-		return nil, err
-	}
-
 	cm := &Runc{
 		opts:          opts,
-		factory:       factory,
 		containers:    make(map[string]*container.Container),
-		libContainers: make(map[string]libcontainer.Container),
+		libContainers: make(map[string]*libcontainer.Container),
 		closed:        make(chan struct{}),
+		needsRefresh:  make(chan string, 60),
 		lock:          sync.RWMutex{},
 	}
 
@@ -93,14 +87,16 @@ func NewRunc() (Connector, error) {
 	return cm, nil
 }
 
-func (cm *Runc) GetLibc(id string) libcontainer.Container {
+func (cm *Runc) GetLibc(id string) *libcontainer.Container {
 	// return previously loaded container
+	cm.lock.RLock()
 	libc, ok := cm.libContainers[id]
+	cm.lock.RUnlock()
 	if ok {
 		return libc
 	}
 	// load container
-	libc, err := cm.factory.Load(id)
+	libc, err := libcontainer.Load(cm.opts.root, id)
 	if err != nil {
 		// remove container if no longer exists
 		if errors.Is(err, libcontainer.ErrNotExist) {
@@ -167,11 +163,19 @@ func (cm *Runc) refreshAll() {
 		}
 	}
 
-	// queue all existing containers for refresh
+	// snapshot existing IDs under read lock to avoid racing with MustGet/delByID
+	cm.lock.RLock()
+	ids := make([]string, 0, len(cm.containers))
 	for id := range cm.containers {
+		ids = append(ids, id)
+	}
+	cm.lock.RUnlock()
+
+	// queue refresh outside the lock to prevent blocking on the channel
+	for _, id := range ids {
 		cm.needsRefresh <- id
 	}
-	log.Debugf("queued %d containers for refresh", len(cm.containers))
+	log.Debugf("queued %d containers for refresh", len(ids))
 }
 
 func (cm *Runc) Loop() {
@@ -225,20 +229,20 @@ func (cm *Runc) Wait() struct{} { return <-cm.closed }
 
 // Runc implements Connector
 func (cm *Runc) Get(id string) (*container.Container, bool) {
-	cm.lock.Lock()
-	defer cm.lock.Unlock()
+	cm.lock.RLock()
+	defer cm.lock.RUnlock()
 	c, ok := cm.containers[id]
 	return c, ok
 }
 
 // Runc implements Connector
 func (cm *Runc) All() (containers container.Containers) {
-	cm.lock.Lock()
+	cm.lock.RLock()
 	for _, c := range cm.containers {
 		containers = append(containers, c)
 	}
+	cm.lock.RUnlock()
 	containers.Sort()
 	containers.Filter()
-	cm.lock.Unlock()
 	return containers
 }
