@@ -119,6 +119,7 @@ jobs:
         with:
           path: artifacts
           merge-multiple: true
+          pattern: ctop-*
 
       - name: Generate checksums
         run: |
@@ -185,6 +186,7 @@ jobs:
         with:
           path: artifacts
           merge-multiple: true
+          pattern: ctop-*
 
       - name: Update Homebrew formula
         run: |
