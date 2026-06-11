@@ -9,6 +9,12 @@ import (
 
 var envPattern = regexp.MustCompile(`(?P<KEY>[^=]+)=(?P<VALUJE>.*)`)
 
+// secretKeyPattern matches env var names that commonly hold credentials;
+// their values are masked in the UI to avoid leaking secrets on screen.
+var secretKeyPattern = regexp.MustCompile(`(?i)(secret|passwd|password|token|api_?key|access_?key|private_?key|credential)`)
+
+const redactedValue = "[REDACTED]"
+
 type Env struct {
 	*ui.Table
 	data map[string]string
@@ -33,6 +39,9 @@ func (w *Env) Set(allEnvs string) {
 		if len(match) == 3 {
 			key := match[1]
 			value := match[2]
+			if value != "" && secretKeyPattern.MatchString(key) {
+				value = redactedValue
+			}
 			w.data[key] = value
 			w.Rows = append(w.Rows, mkInfoRows(key, value)...)
 		}

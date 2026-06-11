@@ -5,8 +5,10 @@ package connector
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
@@ -33,6 +35,12 @@ func NewRuncOpts() (RuncOpts, error) {
 	abs, err := filepath.Abs(root)
 	if err != nil {
 		return opts, err
+	}
+	// runc state lives under a runtime dir; reject anything else so a
+	// poisoned RUNC_ROOT cannot point the connector at e.g. /etc or /proc
+	if abs != "/run" && !strings.HasPrefix(abs, "/run/") &&
+		abs != "/var/run" && !strings.HasPrefix(abs, "/var/run/") {
+		return opts, fmt.Errorf("RUNC_ROOT %q is outside /run or /var/run", abs)
 	}
 	opts.root = abs
 

@@ -13,9 +13,10 @@ on:
         required: false
         type: string
 
+# Default to read-only; jobs that publish (release, docker, homebrew)
+# request write access individually.
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
 env:
   # Opt in to Node.js 24 for all JavaScript actions before GitHub makes
@@ -37,10 +38,9 @@ jobs:
         run: go test ./...
 
       - name: Run govulncheck
-        continue-on-error: true
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@latest
-          govulncheck ./... || echo "::warning::govulncheck found vulnerabilities in transitive dependencies"
+          govulncheck ./...
 
   lint:
     runs-on: ubuntu-latest
@@ -108,14 +108,20 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.tag != '')
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
       - name: Determine tag
         id: tag
+        env:
+          # Pass the dispatch input via env to avoid shell injection from
+          # ${{ }} interpolation inside run: blocks.
+          TAG_INPUT: ${{ github.event.inputs.tag }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.tag }}" ]; then
-            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "$TAG_INPUT" ]; then
+            echo "tag=$TAG_INPUT" >> $GITHUB_OUTPUT
           else
             echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           fi
@@ -143,6 +149,8 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.tag != '')
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - uses: actions/checkout@v4
 
@@ -161,9 +169,13 @@ jobs:
 
       - name: Extract version
         id: version
+        env:
+          # Pass the dispatch input via env to avoid shell injection from
+          # ${{ }} interpolation inside run: blocks.
+          TAG_INPUT: ${{ github.event.inputs.tag }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.tag }}" ]; then
-            echo "version=$(echo '${{ github.event.inputs.tag }}' | sed 's/^v//')" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "$TAG_INPUT" ]; then
+            echo "version=${TAG_INPUT#v}" >> $GITHUB_OUTPUT
           else
             echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
           fi
@@ -182,6 +194,8 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:

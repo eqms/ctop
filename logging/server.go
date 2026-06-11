@@ -4,17 +4,32 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"os"
+	"path/filepath"
 	"sync"
 )
 
-const (
-	socketPath = "./ctop.sock"
-	socketAddr = "127.0.0.1:9000"
-)
+const socketAddr = "127.0.0.1:9000"
 
 var server struct {
 	wg sync.WaitGroup
 	ln net.Listener
+}
+
+// socketPath returns a per-user private location for the debug socket
+// instead of the CWD, so other users sharing a directory cannot attach.
+func socketPath() string {
+	dir := os.Getenv("XDG_RUNTIME_DIR")
+	if dir == "" {
+		dir = filepath.Join(os.TempDir(), fmt.Sprintf("ctop-%d", os.Getuid()))
+		if err := os.MkdirAll(dir, 0o700); err != nil {
+			panic(err)
+		}
+		if err := os.Chmod(dir, 0o700); err != nil {
+			panic(err)
+		}
+	}
+	return filepath.Join(dir, "ctop.sock")
 }
 
 func getListener() net.Listener {
@@ -23,7 +38,13 @@ func getListener() net.Listener {
 	if debugModeTCP() {
 		ln, err = net.Listen("tcp", socketAddr)
 	} else {
-		ln, err = net.Listen("unix", socketPath)
+		path := socketPath()
+		// remove stale socket from a previous unclean shutdown
+		_ = os.Remove(path)
+		ln, err = net.Listen("unix", path)
+		if err == nil {
+			err = os.Chmod(path, 0o600)
+		}
 	}
 	if err != nil {
 		panic(err)
@@ -48,7 +69,7 @@ func StartServer() {
 		}
 	}()
 
-	Log.Notice("logging server started")
+	Log.Notice("logging server started on " + server.ln.Addr().String())
 }
 
 func StopServer() {

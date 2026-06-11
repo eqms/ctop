@@ -40,9 +40,11 @@ Debug mode is enabled via the `CTOP_DEBUG` environment variable:
 CTOP_DEBUG=1 ./ctop
 ```
 
+The socket is created in a per-user private directory: `$XDG_RUNTIME_DIR/ctop.sock` if `XDG_RUNTIME_DIR` is set, otherwise `$TMPDIR/ctop-<uid>/ctop.sock` (mode `0600`).
+
 While `ctop` is running, you can connect to the logging socket via socat or similar tools:
 ```bash
-socat unix-connect:./ctop.sock stdio
+socat unix-connect:"${XDG_RUNTIME_DIR:-$TMPDIR/ctop-$(id -u)}/ctop.sock" stdio
 ```
 
 ## TCP Logging Socket
@@ -53,7 +55,9 @@ In lieu of using a local unix socket, TCP logging can be enabled via the `CTOP_D
 CTOP_DEBUG=1 CTOP_DEBUG_TCP=1 ./ctop
 ```
 
-A TCP listener for streaming log messages will be started on the default listen address(`0.0.0.0:9000`)
+A TCP listener for streaming log messages will be started on the default listen address (`127.0.0.1:9000`).
+
+**Note:** the TCP listener has no authentication — any local process can connect and read the log stream. Only enable it on trusted single-user hosts; prefer the Unix socket otherwise.
 
 ## Log to file
 
