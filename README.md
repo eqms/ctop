@@ -182,7 +182,8 @@ make run-dev
 
 # Debug-Optionen (Umgebungsvariablen)
 CTOP_DEBUG=1          # Debug-Logging und Unix-Socket-Server aktivieren
-CTOP_DEBUG_TCP=1      # TCP Debug-Server (127.0.0.1:9000) statt Unix-Socket
+                      # Socket: $XDG_RUNTIME_DIR/ctop.sock bzw. $TMPDIR/ctop-<uid>/ctop.sock
+CTOP_DEBUG_TCP=1      # TCP Debug-Server (127.0.0.1:9000, ohne Auth) statt Unix-Socket
 CTOP_DEBUG_FILE=/path # Log-Ausgabe zusätzlich in Datei schreiben
 ```
 
@@ -191,7 +192,7 @@ CTOP_DEBUG_FILE=/path # Log-Ausgabe zusätzlich in Datei schreiben
 | Connector | Umgebungsvariable | Standardwert |
 |-----------|-------------------|--------------|
 | Docker | `DOCKER_HOST` | `unix://var/run/docker.sock` |
-| runC | `RUNC_ROOT` | `/run/runc` |
+| runC | `RUNC_ROOT` | `/run/runc` (muss unter `/run` oder `/var/run` liegen) |
 | runC | `RUNC_SYSTEMD_CGROUP` | (deaktiviert) |
 
 ### CI/CD
@@ -381,7 +382,8 @@ make run-dev
 
 # Debug options (environment variables)
 CTOP_DEBUG=1          # Enable debug logging and Unix socket server
-CTOP_DEBUG_TCP=1      # Use TCP debug server (127.0.0.1:9000) instead of Unix socket
+                      # Socket: $XDG_RUNTIME_DIR/ctop.sock or $TMPDIR/ctop-<uid>/ctop.sock
+CTOP_DEBUG_TCP=1      # Use TCP debug server (127.0.0.1:9000, unauthenticated) instead of Unix socket
 CTOP_DEBUG_FILE=/path # Additionally write log output to file
 ```
 
@@ -390,7 +392,7 @@ CTOP_DEBUG_FILE=/path # Additionally write log output to file
 | Connector | Environment Variable | Default |
 |-----------|---------------------|---------|
 | Docker | `DOCKER_HOST` | `unix://var/run/docker.sock` |
-| runC | `RUNC_ROOT` | `/run/runc` |
+| runC | `RUNC_ROOT` | `/run/runc` (must be under `/run` or `/var/run`) |
 | runC | `RUNC_SYSTEMD_CGROUP` | (disabled) |
 
 ### CI/CD

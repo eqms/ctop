@@ -6,6 +6,20 @@
 
 ## Deutsche Release Notes
 
+### v0.8.7 (2026-06-11)
+
+#### Sicherheit
+- **runc-Upgrade v1.4.0 → v1.4.2**: Schließt drei weitere High-Severity Container-Escape-Schwachstellen (GO-2025-4096, GO-2025-4097, GO-2025-4098), veröffentlicht im November 2025 und erst ab runc v1.4.1 gefixt
+- **CI-Härtung** (`.github/workflows/ci.yml`): Shell-Injection über den `workflow_dispatch`-Tag-Input behoben (Übergabe via `env:` statt direkter `${{ }}`-Interpolation); Workflow-Permissions per Job gescoped (Top-Level nur noch `contents: read`); `govulncheck` blockiert jetzt den Build statt nur zu warnen
+- **Debug-Socket abgesichert** (`logging/server.go`): Unix-Socket liegt jetzt in einem privaten Runtime-Verzeichnis (`$XDG_RUNTIME_DIR/ctop.sock` bzw. `$TMPDIR/ctop-<uid>/`, Verzeichnis 0700, Socket 0600) statt im Arbeitsverzeichnis; stale Sockets werden beim Start entfernt
+- **Env-Variablen-Redaction** (`cwidgets/single/env.go`): Werte von Credential-artigen Variablen (`SECRET`, `PASSWORD`, `TOKEN`, `API_KEY`, …) werden in der Single-Container-Ansicht als `[REDACTED]` maskiert
+- **RUNC_ROOT-Validierung** (`connector/runc.go`): Pfade außerhalb von `/run` und `/var/run` werden abgelehnt — eine manipulierte Env-Variable kann den Connector nicht mehr auf `/etc` oder `/proc` richten
+
+#### Intern
+- **Dependency-Bumps**: `BurntSushi/toml` v1.5.0 → v1.6.0, `fsouza/go-dockerclient` v1.13.1 → v1.13.2, Go-Direktive 1.26.0 → 1.26.4
+
+---
+
 ### v0.8.6 (2026-04-21)
 
 #### Sicherheit
@@ -96,6 +110,20 @@ Erster Release des gepflegten Forks von [bcicen/ctop](https://github.com/bcicen/
 ---
 
 ## English Release Notes
+
+### v0.8.7 (2026-06-11)
+
+#### Security
+- **runc upgrade v1.4.0 → v1.4.2**: Patches three more high-severity container-escape vulnerabilities (GO-2025-4096, GO-2025-4097, GO-2025-4098), published November 2025 and only fixed from runc v1.4.1 onwards
+- **CI hardening** (`.github/workflows/ci.yml`): fixed shell injection via the `workflow_dispatch` tag input (passed through `env:` instead of direct `${{ }}` interpolation); workflow permissions scoped per job (top level reduced to `contents: read`); `govulncheck` now blocks the build instead of only warning
+- **Debug socket secured** (`logging/server.go`): the Unix socket now lives in a private runtime directory (`$XDG_RUNTIME_DIR/ctop.sock` or `$TMPDIR/ctop-<uid>/`, directory 0700, socket 0600) instead of the working directory; stale sockets are removed on startup
+- **Env variable redaction** (`cwidgets/single/env.go`): values of credential-like variables (`SECRET`, `PASSWORD`, `TOKEN`, `API_KEY`, …) are masked as `[REDACTED]` in the single-container view
+- **RUNC_ROOT validation** (`connector/runc.go`): paths outside `/run` and `/var/run` are rejected — a poisoned env variable can no longer point the connector at `/etc` or `/proc`
+
+#### Internal
+- **Dependency bumps**: `BurntSushi/toml` v1.5.0 → v1.6.0, `fsouza/go-dockerclient` v1.13.1 → v1.13.2, Go directive 1.26.0 → 1.26.4
+
+---
 
 ### v0.8.6 (2026-04-21)
 
