@@ -1,0 +1,13 @@
+# .git stays in the context: make build embeds `git rev-parse --short HEAD`.
+# The final image is scratch and only receives the binary.
+.github
+.planning
+_build
+_docs
+*.md
+ctop
+*.sock
+.env
+temp/
+.idea
+.DS_Store

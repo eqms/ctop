@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	"github.com/eqms/ctop/container"
+	"github.com/eqms/ctop/redact"
 	ui "github.com/gizak/termui"
 )
 
@@ -27,6 +28,9 @@ func logEvent(e ui.Event) {
 func dumpContainer(c *container.Container) {
 	msg := fmt.Sprintf("logging state for container: %s\n", c.Id)
 	for k, v := range c.Meta {
+		if k == "[ENV-VAR]" {
+			v = redact.EnvList(v)
+		}
 		msg += fmt.Sprintf("Meta.%s = %s\n", k, v)
 	}
 	msg += inspect(&c.Metrics)

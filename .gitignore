@@ -4,3 +4,7 @@ ctop
 *.log
 .DS_Store
 temp/
+*.sock
+.env
+*.pem
+*.key
