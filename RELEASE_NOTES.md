@@ -6,6 +6,20 @@
 
 ## Deutsche Release Notes
 
+### v0.8.8 (2026-07-03)
+
+#### Sicherheit
+- **Env-Redaction für Debug-Dump** (`redact/`, `debug.go`): Neues gemeinsames `redact`-Package — der Container-State-Dump (Taste `D`) maskiert Credential-artige Env-Variablen jetzt ebenfalls als `[REDACTED]`; bisher landeten sie unredacted im Log-Ring-Buffer, in der Debug-Datei (`CTOP_DEBUG_FILE`) und auf dem Debug-Socket. Das Pattern wurde um `AUTH`, `DSN`, `CERT`, `COOKIE`, `JWT` erweitert und erkennt zusätzlich Credentials im Wert selbst (Connection-Strings wie `postgres://user:pass@host/db`), unabhängig vom Variablennamen
+- **CI-Supply-Chain-Härtung** (`.github/workflows/ci.yml`): Alle GitHub Actions auf volle Commit-SHAs gepinnt (mit Versions-Kommentar), `govulncheck` auf v1.5.0 gepinnt statt `@latest`, `timeout-minutes` für alle sechs Jobs
+- **Dependabot** (`.github/dependabot.yml`): Wöchentliche automatische Updates für Go-Module, GitHub Actions (inkl. SHA-Pins) und das Docker-Base-Image
+- **Docker-Härtung**: Base-Image `golang:1.26-alpine` per SHA256-Digest gepinnt; root-by-design für den `docker.sock`-Zugriff im Dockerfile dokumentiert; neue `.dockerignore` verschlankt den Build-Context
+
+#### Intern
+- `cwidgets/single/env.go` nutzt das gemeinsame `redact`-Package (Duplikat-Logik entfernt); neue Unit-Tests in `redact/redact_test.go`
+- `.gitignore` um `*.sock`, `.env`, `*.pem`, `*.key` ergänzt
+
+---
+
 ### v0.8.7 (2026-06-11)
 
 #### Sicherheit
@@ -110,6 +124,20 @@ Erster Release des gepflegten Forks von [bcicen/ctop](https://github.com/bcicen/
 ---
 
 ## English Release Notes
+
+### v0.8.8 (2026-07-03)
+
+#### Security
+- **Env redaction for debug dump** (`redact/`, `debug.go`): new shared `redact` package — the container state dump (key `D`) now masks credential-like env variables as `[REDACTED]` too; previously they were logged unredacted to the log ring buffer, the debug file (`CTOP_DEBUG_FILE`) and the debug socket. The pattern was extended with `AUTH`, `DSN`, `CERT`, `COOKIE`, `JWT` and additionally detects credentials embedded in values (connection strings like `postgres://user:pass@host/db`) regardless of the variable name
+- **CI supply-chain hardening** (`.github/workflows/ci.yml`): all GitHub Actions pinned to full commit SHAs (with version comments), `govulncheck` pinned to v1.5.0 instead of `@latest`, `timeout-minutes` on all six jobs
+- **Dependabot** (`.github/dependabot.yml`): weekly automated updates for Go modules, GitHub Actions (incl. SHA pins) and the Docker base image
+- **Docker hardening**: base image `golang:1.26-alpine` pinned by SHA256 digest; root-by-design for `docker.sock` access documented in the Dockerfile; new `.dockerignore` slims down the build context
+
+#### Internal
+- `cwidgets/single/env.go` now uses the shared `redact` package (duplicate logic removed); new unit tests in `redact/redact_test.go`
+- `.gitignore` extended with `*.sock`, `.env`, `*.pem`, `*.key`
+
+---
 
 ### v0.8.7 (2026-06-11)
 

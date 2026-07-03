@@ -14,7 +14,7 @@ make build-all       # 5-platform cross-compile into _build/ with sha256sums.txt
 make run-dev         # build with CTOP_DEBUG=1 and run — enables the debug log server
 make image           # docker build
 
-go test ./...        # unit tests. Only widgets/view_test.go exists today
+go test ./...        # unit tests. widgets/view_test.go and redact/redact_test.go exist today
 golangci-lint run --timeout=5m   # local config is v2 (version: "2" at the top of .golangci.yml)
 GOOS=linux go build ./...        # REQUIRED before touching connector/runc.go — see below
 ```

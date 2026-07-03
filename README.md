@@ -25,7 +25,8 @@ Dies ist ein gepflegter Fork von [bcicen/ctop](https://github.com/bcicen/ctop), 
 `ctop` ist für mich ein unverzichtbares Werkzeug im täglichen Umgang mit Containern — kompakt, schnell und auf den Punkt. Leider wird das Original-Projekt seit längerer Zeit nicht mehr aktiv weiterentwickelt. Da ich das Tool regelmäßig nutze und es nicht aufgeben möchte, pflege ich es hier als eigenständigen Fork weiter: mit aktuellen Abhängigkeiten, Security-Fixes und modernem Go.
 
 Änderungen in diesem Fork:
-- Security-Fixes (Shell-Injection, Dateiberechtigungen, Debug-Server-Binding)
+- Security-Fixes (Shell-Injection, Dateiberechtigungen, Debug-Server-Binding, Secret-Redaction in Anzeige und Debug-Logs)
+- Supply-Chain-Härtung (SHA-gepinnte CI-Actions, Dependabot, Digest-gepinntes Docker-Base-Image)
 - Aktualisierung auf Go 1.22 mit modernen stdlib-Paketen (`log/slog`, `os.ReadDir`)
 - Ersetzen nicht gepflegter Dependencies (`op/go-logging`, `nu7hatch/gouuid`, `pkg/errors`)
 - GitHub Actions CI/CD mit Multi-Plattform-Builds (Linux amd64/arm64, macOS amd64/arm64, Windows amd64)
@@ -225,7 +226,8 @@ This is a maintained fork of [bcicen/ctop](https://github.com/bcicen/ctop), orig
 `ctop` is an indispensable tool in my daily work with containers — compact, fast and to the point. Unfortunately, the original project is no longer actively maintained. Since I use this tool on a regular basis and don't want to let it go, I maintain it here as an independent fork: with up-to-date dependencies, security fixes and modern Go.
 
 Changes in this fork:
-- Security fixes (shell injection, file permissions, debug server binding)
+- Security fixes (shell injection, file permissions, debug server binding, secret redaction in UI and debug logs)
+- Supply-chain hardening (SHA-pinned CI actions, Dependabot, digest-pinned Docker base image)
 - Updated to Go 1.22 with modern stdlib packages (`log/slog`, `os.ReadDir`)
 - Replaced unmaintained dependencies (`op/go-logging`, `nu7hatch/gouuid`, `pkg/errors`)
 - GitHub Actions CI/CD with multi-platform builds (Linux amd64/arm64, macOS amd64/arm64, Windows amd64)
