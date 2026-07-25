@@ -12,6 +12,8 @@ github.com/c9s/goprocinfo v0.0.0-20170609001544-b34328d6e0cd h1:xqaBnULC8wEnQpRD
 github.com/c9s/goprocinfo v0.0.0-20170609001544-b34328d6e0cd/go.mod h1:uEyr4WpAH4hio6LFriaPkL938XnrvLpNPmQHBdrmbIE=
 github.com/checkpoint-restore/go-criu/v7 v7.2.0 h1:qGiWA4App1gGlEfIJ68WR9jbezV9J7yZdjzglezcqKo=
 github.com/checkpoint-restore/go-criu/v7 v7.2.0/go.mod h1:u0LCWLg0w4yqqu14aXhiB4YD3a1qd8EcCEg7vda5dwo=
+github.com/clipperhouse/uax29/v2 v2.2.0 h1:ChwIKnQN3kcZteTXMgb1wztSgaU+ZemkgWdohwgs8tY=
+github.com/clipperhouse/uax29/v2 v2.2.0/go.mod h1:EFJ2TJMRUaplDxHKj1qAEhCtQPW2tJSwu5BF98AuoVM=
 github.com/containerd/console v1.0.5 h1:R0ymNeydRqH2DmakFNdmjR2k0t7UPuiOV/N/27/qqsc=
 github.com/containerd/console v1.0.5/go.mod h1:YynlIjWYF8myEu6sdkwKIvGQq+cOckRm6So2avqoYAk=
 github.com/containerd/log v0.1.0 h1:TCJt7ioM2cr/tfR8GPbGf9/VRAX8D2B4PjzCpfX540I=
@@ -48,8 +50,8 @@ github.com/maruel/panicparse v1.6.1/go.mod h1:uoxI4w9gJL6XahaYPMq/z9uadrdr1SyHuQ
 github.com/maruel/panicparse/v2 v2.1.1/go.mod h1:AeTWdCE4lcq8OKsLb6cHSj1RWHVSnV9HBCk7sKLF4Jg=
 github.com/mattn/go-colorable v0.1.7/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
 github.com/mattn/go-isatty v0.0.12/go.mod h1:cbi8OIDigv2wuxKPP5vlRcQ1OAZbq2CE4Kysco4FUpU=
-github.com/mattn/go-runewidth v0.0.16 h1:E5ScNMtiwvlvB5paMFdw9p4kSQzbXFikJ5SQO6TULQc=
-github.com/mattn/go-runewidth v0.0.16/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
+github.com/mattn/go-runewidth v0.0.27 h1:Feg/Oou5zI/wnpgDF6omIU0OokC9GxLC/WRknhVlIR0=
+github.com/mattn/go-runewidth v0.0.27/go.mod h1:3qAiGCV4Koz/yuveO58qUefmUTRm8r0IGEXZ9jeHp/8=
 github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d/go.mod h1:01TrycV0kFyexm33Z7vhZRXopbI8J3TDReVlkTgMUxE=
 github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 h1:DpOJ2HYzCv8LZP15IdmG+YdwD2luVPHITV96TkirNBM=
 github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7/go.mod h1:ZXFpozHsX6DPmq2I0TCekCxypsnAUbP2oI0UX1GXzOo=
@@ -93,8 +95,6 @@ github.com/pkg/browser v0.0.0-20201207095918-0426ae3fba23 h1:dofHuld+js7eKSemxqT
 github.com/pkg/browser v0.0.0-20201207095918-0426ae3fba23/go.mod h1:N6UoU20jOqggOuDwUaBQpluzLNDqif3kq9z2wpdYEfQ=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/rivo/uniseg v0.2.0 h1:S1pD9weZBuJdFmowNwbpi7BJ8TNftyUImj/0WQi72jY=
-github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/seccomp/libseccomp-golang v0.11.1 h1:wuk4ZjSx6kyQII4rj6G6fvVzRHQaSiPvccJazDagu4g=
 github.com/seccomp/libseccomp-golang v0.11.1/go.mod h1:5m1Lk8E9OwgZTTVz4bBOer7JuazaBa+xTkM895tDiWc=
 github.com/sirupsen/logrus v1.9.4 h1:TsZE7l11zFCLZnZ+teH4Umoq5BhEIfIzfRDZ1Uzql2w=
