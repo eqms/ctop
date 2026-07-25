@@ -10,7 +10,7 @@ require (
 	github.com/jgautheron/codename-generator v0.0.0-20150829203204-16d037c7cc3c
 	github.com/mattn/go-runewidth v0.0.16
 	github.com/nsf/termbox-go v0.0.0-20190121233118-02980233997d
-	github.com/opencontainers/cgroups v0.0.6
+	github.com/opencontainers/cgroups v0.0.8
 	github.com/opencontainers/runc v1.4.2
 	github.com/pkg/browser v0.0.0-20201207095918-0426ae3fba23
 )
